@@ -5,7 +5,7 @@ import sys, serial
 if __name__ == '__main__':
     ser = serial.Serial(
             port='/dev/cu.usbserial-A8004ISG',
-            baudrate=38400,
+            baudrate=9600,
             timeout=10,
             xonxoff=0,
             rtscts=0)
