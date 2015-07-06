@@ -15,6 +15,12 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
     ./build.sh
 
+## Actual output rate
+
+* Sampling rate: 8 microseconds/sample = 125kHz
+* Output rate: Approx. 400bytes/sec = 3.2kHz
+* Transfer rate from Arduino: 9600bps, 8-bit, no parity raw bytes
+
 ## Notes
 
 * This program coexists with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
