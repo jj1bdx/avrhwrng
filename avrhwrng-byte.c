@@ -78,19 +78,33 @@ static void ioinit(void) {
     /* no external output, CTC */
     TCCR0A = 0x02;
     /*
-     * note: (timer period) * 16 > 
-     *       (baud rate period * 10)
+     * Idealistically, keep
+     * (timer period) * 16 > (baud rate period * 10)
      * to maintain the condition
      * that every generated random byte
-     * need not be buffered
+     * need not be buffered.
      * (min. 16 random source samplings are required
      *  and sending 10 bits to serial port are required)
+     * On the other hand, making timer period shorter
+     * may not cause real harm, because:
+     * * The raw analog comparator output is mostly zero bits
+     * * busy waiting of the USART will prevent output overrun
      */
-    /* timer period: 8 microseconds */
-    OCR0A = (8*2) - 1;
-    /* clk/8 (0.5 microseconds / count) */
+    /*
+     * The noise characteristics do not differ
+     * Between the raw comparator sampling rates of
+     * 1us to 4096us
+     */
+    /*
+     * Setting the timer period less than 750ns
+     * may cause the comparator to delay or
+     * unable to follow
+     */
+    /* timer period: 12/16 = 0.75 microseconds */
+    OCR0A = (12) - 1;
+    /* clk (0.06125 microseconds / count, or 16MHz) */
     /* start timer */
-    TCCR0B = 0x02;
+    TCCR0B = 0x01;
 
     /* enable OCIE0A interrupt */
     TIMSK0 = 0x02;
@@ -102,7 +116,6 @@ static void ioinit(void) {
 /* output to USART0 */
 
 static void putchr(uint8_t c) {
-
     /*
      * busy-waiting UDRE0
      * note: 
@@ -113,6 +126,7 @@ static void putchr(uint8_t c) {
      * interrupt-driven
      */
     loop_until_bit_is_set(UCSR0A, UDRE0);
+    /* Output the given char to USART0 */
     UDR0 = c;
 }
 
@@ -142,18 +156,35 @@ ISR(TIMER0_COMPA_vect) {
     /* do nothing when flag is set */
     if (flagandbit != 0)
         return;
-    /* if (flag == 0) */
+    /*
+     * if flag is not set,
+     * check the input state
+     */
+    /*
+     * state: 0 -> 1st bit
+     * state: 1 -> 2nd bit
+     */
     if (state == 0) {
+        /* save the 1st bit to oval */
         state++;
         oval = comparator_input();
     } else {
+        /* clear the state */
         state = 0;
+        /* obtain the 2nd bit */
+        /* do nothing if two bits are the same */
         if (comparator_input() != oval) {
             if (oval != 0) {
+                /* {1st, 2nd} = {1, 0} */
+                /* Turn on the LED */
                 PORTB |= 0x20;
+                /* Set the output */
                 flagandbit = 3;
             } else {
+                /* {1st, 2nd} = {0, 1} */
+                /* Turn off the LED */
                 PORTB &= 0xdf;
+                /* Set the output */
                 flagandbit = 2;
             }
         }
