@@ -11,6 +11,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <util/delay.h>
 
 /* initialize IO ports */
 static void ioinit(void) {
@@ -60,13 +61,13 @@ static void ioinit(void) {
     /* no USART IRQ, disable TX/RX */
     UCSR0B = 0x00;
     /* clk 2x */
-    UCSR0A = 0x00;
+    UCSR0A = 0x02;
     /* async, no parity, 8bit */
     UCSR0C = 0x06;
-    /* baud rate (115200bps, 16MHz, 2x) */
-    /* real rate: 111111bps (9 microsecs/bit) */
+    /* baud rate (38400bps, 16MHz, U2Xn=1) */
+    /* real rate: 39216bps (25.5 microsecs/bit) */
     UBRR0H = 0;
-    UBRR0L = 8;
+    UBRR0L = 51;
     /* no USART IRQ, enable TX (no RX) */
     UCSR0B = 0x08;
 
