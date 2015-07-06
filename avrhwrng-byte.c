@@ -194,9 +194,11 @@ ISR(TIMER0_COMPA_vect) {
 /* main routine */
 
 int main() {
-    uint8_t p2;
     uint8_t i = 0;
     uint8_t p = 0;
+    uint8_t j = 0;
+    uint8_t p2 = 0;
+    uint8_t p2b = 0;
 
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
@@ -218,8 +220,16 @@ int main() {
                 /* clear counters and buffer */
                 p = 0;
                 i = 0;
-                /* and output the result in a raw byte*/
-                putchr(p2);
+                /* change byte xor machine state */
+                j++;
+                if (j > 1) {
+                    j = 0;
+                    /* and output the result in a raw byte*/
+                    putchr(p2b ^ p2);
+                } else {
+                    /* save the output byte and keep on generating */
+                    p2b = p2;
+                }
             }
         }
     }
