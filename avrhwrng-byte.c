@@ -97,15 +97,14 @@ static void ioinit(void) {
      * 1us to 4096us
      */
     /*
-     * Setting the timer period less than 750ns
-     * may cause the comparator to delay or
-     * unable to follow
+     * Setting the timer period too small
+     * may break the timer-driven interrupt routine
      */
-    /* timer period: 12/16 = 0.75 microseconds */
-    OCR0A = (12) - 1;
-    /* clk (0.06125 microseconds / count, or 16MHz) */
+    /* timer period: 8 microseconds = 128 machine cycles */
+    OCR0A = (8*2) - 1;
+    /* clk/8 (0.5 microseconds / count) */
     /* start timer */
-    TCCR0B = 0x01;
+    TCCR0B = 0x02;
 
     /* enable OCIE0A interrupt */
     TIMSK0 = 0x02;
@@ -146,6 +145,7 @@ volatile uint8_t flagandbit = 0;
 /*
  * sampling from the random source
  * with the timer0 COMPA ISR
+ * Note: this ISR code is *interrupt driven*
  */
 
 #define comparator_input() (ACSR & _BV(ACO))
