@@ -79,12 +79,12 @@ static void ioinit(void) {
     TCCR0A = 0x02;
     /*
      * Idealistically, keep
-     * (timer period) * 16 > (baud rate period * 10)
-     * to maintain the condition
-     * that every generated random byte
-     * need not be buffered.
-     * (min. 16 random source samplings are required
-     *  and sending 10 bits to serial port are required)
+     * (timer period) * 32 > (baud rate period * 10)
+     * to maintain the condition that
+     * every generated random byte need not be buffered.
+     * (Minimum 32 random source samplings are required
+     *  for generating a byte of random number output
+     *  and sending 10 bits to serial port are required.)
      * On the other hand, making timer period shorter
      * may not cause real harm, because:
      * * The raw analog comparator output is mostly zero bits
@@ -92,7 +92,7 @@ static void ioinit(void) {
      */
     /*
      * The noise characteristics do not differ
-     * Between the raw comparator sampling rates of
+     * between the raw comparator sampling rates of
      * 1us to 4096us
      */
     /*
