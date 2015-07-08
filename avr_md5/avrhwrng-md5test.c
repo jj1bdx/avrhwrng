@@ -124,7 +124,7 @@ int main(int argc, char **argv) {
     for (i = 0; md5_tests[i].data != NULL; i++) {
       md5(md5_tests[i].data, md5_tests[i].length, hash);
       if (memcmp(hash, md5_tests[i].hash, 16)) {
-        puts("MD5 test failed");
+        puts("MD5 test failure detected");
         teststate = 1;
         break;
       }
