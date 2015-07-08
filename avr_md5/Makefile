@@ -18,7 +18,7 @@ CFLAGS += -MD -MP -MT $(*F).o -MF dep/$(@F).d
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS += -Wl,-Map=avrhwrng-byte.map
+LDFLAGS += -Wl,-Map=avrhwrng-md5test.map
 
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = -R .eeprom -R .fuse -R .lock -R .signature
