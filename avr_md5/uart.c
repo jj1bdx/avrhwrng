@@ -1,3 +1,12 @@
+/*
+ * UART control code taken from
+ * https://github.com/tuupola/avr_demo/blob/master/blog/simple_usart/main.c
+ * 
+ * Copyright (c) 2011 Mika Tuupola
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/mit-license.php
+ */
+
 #include <avr/io.h>
 #include <stdio.h>
 

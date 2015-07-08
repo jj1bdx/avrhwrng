@@ -1,13 +1,22 @@
 /*
+ * ATmega168 Arduino MD5 functionality testing code
+ * modification of the j00ru's code
+ * by Kenji Rikitake
+ */
+/*
+ * 
  * ATmega 328 (and compatible) MD5 hash function (RFC 1321) optimized assembly
  * implementation.
  *
  * by Mateusz "j00ru" Jurczyk
  * http://j00ru.vexillium.org/
  *
- * -- License
+ */
+/*
+ * -- License of this code
  *
  * Copyright (C) 2012 by Mateusz Jurczyk
+ * Copyright (C) 2015 by Kenji Rikitake
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +35,8 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
+ */
+/*
  * -- Usage
  *
  * The file implements the core computational md5_transform procedure. Together
@@ -110,16 +120,15 @@ int main(int argc, char **argv) {
   unsigned int i;
   uint8_t hash[16];
   uint8_t teststate = 0;
+  char keycode = 0;
 
   uart_init();
   stdout = &uart_output;
   stdin = &uart_input;
 
-  char input;
-
   while(1) {
     puts("Type a key to start MD5 test");
-    input = getchar();
+    keycode = getchar();
     puts("MD5 test begins");
     for (i = 0; md5_tests[i].data != NULL; i++) {
       md5(md5_tests[i].data, md5_tests[i].length, hash);
