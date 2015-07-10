@@ -15,6 +15,12 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
     ./build.sh
 
+## how to write the image
+
+    # for ATmega168 optiboot
+    avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
+            -U flash:w:target-filename.hex
+
 ## Actual output rate
 
 * Sampling rate: 8 microseconds/sample = 125kHz
