@@ -8,6 +8,9 @@
 
 /* #define F_CPU (16000000UL) */
 
+/* Size optimized */
+#pragma GCC optimize ("Os")
+
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -140,59 +143,70 @@ static void putchr(uint8_t c) {
  * 3: obtained '1'
  */
 
-volatile uint8_t flagandbit = 0;
-
 /*
  * sampling from the random source
  * with the timer0 COMPA ISR
  * Note: this ISR code is *interrupt driven*
  */
 
+/* speed optimized for the ISR */
+#pragma GCC optimize ("O3")
+
+/* obtain comparator values */
 #define comparator_input() (ACSR & _BV(ACO))
 
-ISR(TIMER0_COMPA_vect) {
-    static uint8_t state = 0;
-    static uint8_t oval = 0;
+/*
+ * declare all ISR variables
+ * as volatile and mapped into AVR registers
+ */
+volatile register uint8_t flagandbit asm("r16");
+volatile register uint8_t state asm("r15");
+volatile register uint8_t oval asm("r14");
 
-    /* do nothing when flag is set */
-    if (flagandbit != 0)
+ISR(TIMER0_COMPA_vect) {
+    /*
+     * do nothing when flag is set
+     */
+    if (flagandbit != 0) {
         return;
+    }
     /*
      * if flag is not set,
      * check the input state
-     */
-    /*
+     *
      * state: 0 -> 1st bit
      * state: 1 -> 2nd bit
      */
     if (state == 0) {
         /* save the 1st bit to oval */
-        state++;
         oval = comparator_input();
+        /* set the 2nd bit state */
+        state = 1;
     } else {
-        /* clear the state */
-        state = 0;
         /* obtain the 2nd bit */
         /* do nothing if two bits are the same */
         if (comparator_input() != oval) {
-            if (oval != 0) {
-                /* {1st, 2nd} = {1, 0} */
-                /* Turn on the LED */
-                PORTB |= 0x20;
-                /* Set the output */
-                flagandbit = 3;
-            } else {
+            /*
+             * set the output if the two bits are
+             * different with each other
+             */
+            if (oval == 0) {
                 /* {1st, 2nd} = {0, 1} */
-                /* Turn off the LED */
-                PORTB &= 0xdf;
-                /* Set the output */
                 flagandbit = 2;
+            } else {
+                /* {1st, 2nd} = {1, 0} */
+                flagandbit = 3;
             }
         }
+        /* set the 1st bit state */
+        state = 0;
     }
 }
 
-/* main routine */
+/* size optimized again */
+#pragma GCC optimize ("Os")
+
+/* main function */
 
 int main() {
     uint8_t i = 0;
@@ -204,13 +218,23 @@ int main() {
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
 
+    /* initialize the global register variables */
+    flagandbit = 0;
+    state = 0;
+    oval = 0;
+
     for (;;) {
         /* check whether a random bit is found */
         if (flagandbit != 0) {
             /* accumulate 8 bits */
             p = p + p;
             if ((flagandbit & 0x01) != 0) {
+                /* Turn on the LED */
+                PORTB |= 0x20;
                 p++;
+            } else {
+                /* Turn off the LED */
+                PORTB &= 0xdf;
             }
             i++;
             /* unlock the timer IRQ flags */
