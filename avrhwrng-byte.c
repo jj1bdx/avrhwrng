@@ -67,10 +67,10 @@ static void ioinit(void) {
     UCSR0A = 0x00;
     /* async, no parity, 8bit */
     UCSR0C = 0x06;
-    /* baud rate (9600bps, 16MHz, U2Xn=1) */
-    /* real rate: 9615.4bps (104 microsecs/bit) */
+    /* baud rate (19200bps, 16MHz, U2Xn=1) */
+    /* real rate: 19231bps (52 microsecs/bit) */
     UBRR0H = 0;
-    UBRR0L = 103;
+    UBRR0L = 51;
     /* no USART IRQ, enable TX (no RX) */
     UCSR0B = 0x08;
 
@@ -103,8 +103,8 @@ static void ioinit(void) {
      * Setting the timer period too small
      * may break the timer-driven interrupt routine
      */
-    /* timer period: 8 microseconds = 128 machine cycles */
-    OCR0A = (8*2) - 1;
+    /* timer period: 4 microseconds = 64 machine cycles */
+    OCR0A = (4*2) - 1;
     /* clk/8 (0.5 microseconds / count) */
     /* start timer */
     TCCR0B = 0x02;
