@@ -1,0 +1,90 @@
+========= Summary results of Rabbit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  40
+ Total CPU time:   00:03:16.37
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:31.75
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:24.37
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:20.64
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:18.89
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:17.77
+
+ All tests were passed
+
+
+
+
+========= Summary results of Alphabit =========
+
+ Version:          TestU01 1.2.3
+ File:             testxor2
+ Number of bits:   536870912
+ Number of statistics:  17
+ Total CPU time:   00:00:17.88
+
+ All tests were passed
+
+
+
