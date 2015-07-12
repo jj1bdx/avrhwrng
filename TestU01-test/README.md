@@ -1,0 +1,11 @@
+# AVR Hardware RNG test code and results
+
+* TestU01 Rabbit and Alphabit tests for 2^29 bits of output
+* Code run on FreeBSD 10.2-PRERELEASE
+
+## Files
+
+* testxor2: the binary output (slightly larger than 2^26 bytes)
+* t-xor.c: C test code with TestU01 library
+* t-xor.result.txt: test result for testxor2
+
