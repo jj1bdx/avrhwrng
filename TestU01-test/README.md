@@ -2,6 +2,7 @@
 
 * TestU01 Rabbit and Alphabit tests for 2^29 bits of output
 * Code run on FreeBSD 10.2-PRERELEASE
+* See <http://www.iro.umontreal.ca/~simardr/testu01/guideshorttestu01.pdf> for the further details
 
 ## Files
 
