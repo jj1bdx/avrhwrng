@@ -8,7 +8,7 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
 ## Changes
 
-* 19-JUL-2015: Code now targeted for ATmega328p (though it will work on ATmega48/88/168).
+* 19-JUL-2015: Code now targeted for ATmega168 and ATmega328p (modify Makefile: default is for ATmega168).
 * 6-JUL-2015: Code tested under avr-gcc 4.9.2 with HomeBrew build environment.
 * 7-MAR-2009: Code tested under AVR Studio 4.15 with WinAVR-20081205.
 

@@ -6,8 +6,8 @@
 
 ## General Flags
 PROJECT = avrhwrng-byte
-#MCU = atmega168
-MCU = atmega328p
+MCU = atmega168
+#MCU = atmega328p
 TARGET = avrhwrng-byte.elf
 CC = avr-gcc
 
