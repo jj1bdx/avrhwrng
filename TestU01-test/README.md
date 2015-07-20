@@ -7,7 +7,7 @@
 
 ## Files
 
-* testxor2: the binary output (slightly larger than 2^26 bytes)
+* testxor2: the binary output (slightly larger than 2^26 bytes, removed from repo)
 * t-xor.c: C test code with TestU01 library
 * t-xor.result.txt: test result for testxor2
 
