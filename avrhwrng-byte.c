@@ -73,8 +73,14 @@ static void ioinit(void) {
     DDRD = 0x3e;
     PORTD = 0x3f;
 
-    DDRC = 0xff;
-    PORTC = 0xff;
+    /*
+     * ADC1/PC1/Pin A1 to input
+     * ADC0/PC0/Pin A0 to input
+     * ADC1/ADC0 pullup off
+     */
+
+    DDRC = 0xfc;
+    PORTC = 0xfc;
 
     /* PB5 = LED on Arduino 2009 */
     DDRB = 0xff;
