@@ -4,8 +4,8 @@ import sys, serial
 
 if __name__ == '__main__':
     ser = serial.Serial(
-            port='/dev/cu.usbmodem1d11311',
-            baudrate=19200,
+            port='/dev/cu.usbserial-A8004IiC',
+            baudrate=115200,
             timeout=10,
             xonxoff=0,
             rtscts=0)

@@ -96,10 +96,10 @@ static void ioinit(void) {
     UCSR0A = 0x00;
     /* async, no parity, 8bit */
     UCSR0C = 0x06;
-    /* baud rate (19200bps, 16MHz, U2Xn=1) */
-    /* real rate: 19231bps (52 microsecs/bit) */
+    /* baud rate (11520bps, 16MHz, U2Xn=1) */
+    /* real rate: 111111bps (9 microsecs/bit) */
     UBRR0H = 0;
-    UBRR0L = 51;
+    UBRR0L = 8;
     /* no USART IRQ, enable TX (no RX) */
     UCSR0B = 0x08;
 
