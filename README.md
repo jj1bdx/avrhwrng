@@ -8,7 +8,8 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
 ## Changes
 
-* 23-JUL-2015: Performance values revised / assumes connection between AIN1/D7-A1 and AIN0/D6-A0 (A0/A1 set to input, no pullup)
+* 12-AUG-2015: Canceled A0/A1 setup, no connection assumed between AIN1/D7-A1 and AIN0/D6-A0
+* 23-JUL-2015: Performance values revised / *CANCELED*: assumes connection between AIN1/D7-A1 and AIN0/D6-A0 (A0/A1 set to input, no pullup)
 * 19-JUL-2015: Code now targeted for ATmega168 and ATmega328p (modify Makefile: default is for ATmega168).
 * 6-JUL-2015: Code tested under avr-gcc 4.9.2 with HomeBrew build environment.
 * 7-MAR-2009: Code tested under AVR Studio 4.15 with WinAVR-20081205.
