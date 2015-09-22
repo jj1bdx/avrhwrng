@@ -140,6 +140,9 @@ static void ioinit(void) {
     sei();
 }
 
+/* speed optimized for the ISR */
+#pragma GCC optimize ("O3")
+
 /* output to USART0 */
 
 static void putchr(uint8_t c) {
@@ -172,9 +175,6 @@ static void putchr(uint8_t c) {
  * with the timer0 COMPA ISR
  * Note: this ISR code is *interrupt driven*
  */
-
-/* speed optimized for the ISR */
-#pragma GCC optimize ("O3")
 
 /* obtain comparator values */
 #define comparator_input() (ACSR & _BV(ACO))
@@ -226,9 +226,6 @@ ISR(TIMER0_COMPA_vect) {
         state = 0;
     }
 }
-
-/* size optimized again */
-#pragma GCC optimize ("Os")
 
 /* main function */
 
