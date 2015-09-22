@@ -8,6 +8,7 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
 ## Changes
 
+* 23-SEP-2015: Use -O3 altogether
 * 12-AUG-2015: Canceled A0/A1 setup, no connection assumed between AIN1/D7-A1 and AIN0/D6-A0
 * 23-JUL-2015: Performance values revised / *CANCELED*: assumes connection between AIN1/D7-A1 and AIN0/D6-A0 (A0/A1 set to input, no pullup)
 * 19-JUL-2015: Code now targeted for ATmega168 and ATmega328p (modify Makefile: default is for ATmega168).
@@ -16,7 +17,7 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
 ## How to compile
 
-    ./build.sh
+    make
 
 ## how to write the image
 
@@ -27,7 +28,8 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 ## Actual output rate
 
 * Sampling rate: 4 us = 250kHz
-* Output rate: ~2100bytes/sec = 17.6kHz
+* Output rate for v1rev2: ~2100bytes/sec = 17.6kHz
+* Output rate for v1amp: ~3500bytes/sec = 28kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
