@@ -16,7 +16,7 @@ COMMON = -mmcu=$(MCU)
 
 ## Compile options common for all C compilation units.
 CFLAGS = $(COMMON)
-CFLAGS += -Wall -O2 -g -DF_CPU=16000000UL
+CFLAGS += -Wall -O3 -g -DF_CPU=16000000UL
 CFLAGS += -MD -MP -MT $(*F).o -MF $(@F).d 
 
 ## Linker flags

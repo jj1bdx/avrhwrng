@@ -31,9 +31,6 @@
 
 /* #define F_CPU (16000000UL) */
 
-/* Size optimized */
-#pragma GCC optimize ("Os")
-
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -139,9 +136,6 @@ static void ioinit(void) {
     /* enable interrupt after initialization*/
     sei();
 }
-
-/* speed optimized for the ISR */
-#pragma GCC optimize ("O3")
 
 /* output to USART0 */
 
