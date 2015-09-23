@@ -6,6 +6,20 @@ for a shield (extended piece of hardware) for Arduino Duemilanove / Arduino UNO.
 Note: the code is *not* written in the Arduino programming framework; it
 is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
+## How it works
+
+Two independent noise generator circuits are connected to ATmega168/328P's
+analog comparator inputs (AIN0/AIN1, PD6/PD7, or Pin 6/7). The MCU samples the
+comparator output in a fixed frequency of the Timer 0 interrupts (4
+microseconds = 250kHz). 
+
+The sampled output bit stream from AVR analog comparator is filtered through
+von Neumann algorithm of two adjacent sampled bits into a byte stream. Each of
+the two-byte pairs of the byte stream is again filtered into one-byte stream by
+XORing the bytes of the pair with each other.
+
+The code will run either on ATmega168 or ATmega328P.
+
 ## Changes
 
 * 23-SEP-2015: Use -O3 altogether
