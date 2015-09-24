@@ -16,10 +16,10 @@ The MCU runs the following program without any hardware interrupt as an infinite
 * Sample the pin inputs of PD6 and PD7
 * Treat the sampled two-bit pair into two independent bit streams
 * Apply the von Neumann algorithm for two consecutive sampled bits *independently* for each bit stream
-* Accumulate valid bits from two two bit streams into single byte stream
-* Filter the byte stream for each consecutive two-byte pair by XORing the bytes of the pair with each other
-* Wait for finishing the USART0 transmission (running in 111111bps for 115200bps)
-* Send each filtered byte to USART0
+* Accumulate valid bits from two bit streams into single byte stream
+* Filter a two-byte pair from the byte stream by XORing with each other
+* Wait for finishing the USART0 transmission (serial rate: running in 111111bps for 115200bps)
+* Send each filtered byte to USART0 (non-blocking)
 * Go to the top and do it all over again
 
 The code will run either on ATmega168 or ATmega328P.
@@ -40,7 +40,7 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## Actual output rate for Version 2
 
-* Output rate for v2rev1: ~11111bytes/sec = 88.8kHz
+* Output rate for v2rev1: ~11000bytes/sec = 88kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
