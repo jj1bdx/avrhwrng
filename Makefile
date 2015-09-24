@@ -1,14 +1,14 @@
 ##############################################################################
-# Makefile for the project avrhwrng-byte
+# Makefile for the project avrhwrng-v2
 ###############################################################################
 
 ## NOTE: GNU Make only
 
 ## General Flags
-PROJECT = avrhwrng-byte
+PROJECT = avrhwrng-v2
 MCU = atmega168
 #MCU = atmega328p
-TARGET = avrhwrng-byte.elf
+TARGET = avrhwrng-v2.elf
 CC = avr-gcc
 
 ## Options common to compile, link and assembly rules
@@ -21,7 +21,7 @@ CFLAGS += -MD -MP -MT $(*F).o -MF $(@F).d
 
 ## Linker flags
 LDFLAGS = $(COMMON)
-LDFLAGS += -Wl,-Map=avrhwrng-byte.map
+LDFLAGS += -Wl,-Map=avrhwrng-v2.map
 
 ## Intel Hex file production flags
 HEX_FLASH_FLAGS = -R .eeprom -R .fuse -R .lock -R .signature
@@ -31,13 +31,13 @@ HEX_EEPROM_FLAGS += --set-section-flags=.eeprom="alloc,load"
 HEX_EEPROM_FLAGS += --change-section-lma .eeprom=0 --no-change-warnings
 
 ## Objects that must be built in order to link
-OBJECTS = avrhwrng-byte.o
+OBJECTS = avrhwrng-v2.o
 
 ## Objects explicitly added by the user
 LINKONLYOBJECTS = 
 
 ## Build
-all: $(TARGET) avrhwrng-byte.hex avrhwrng-byte.eep avrhwrng-byte.lss size
+all: $(TARGET) avrhwrng-v2.hex avrhwrng-v2.eep avrhwrng-v2.lss size
 
 ## Compile
 
@@ -65,4 +65,4 @@ size: ${TARGET}
 ## Clean target
 .PHONY: clean
 clean:
-	-rm -rf $(OBJECTS) avrhwrng-byte.elf dep/* avrhwrng-byte.hex avrhwrng-byte.eep avrhwrng-byte.lss avrhwrng-byte.map
+	-rm -rf $(OBJECTS) avrhwrng-v2.elf dep/* avrhwrng-v2.hex avrhwrng-v2.eep avrhwrng-v2.lss avrhwrng-v2.map
