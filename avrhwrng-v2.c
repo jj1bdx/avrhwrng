@@ -102,9 +102,7 @@ static void ioinit(void) {
     /* no external output, CTC */
     TCCR0A = 0x02;
 
-    /* enable interrupt after initialization */
-    /* though no interrupt should be caused */
-    sei();
+    /* Note: interrupts are NOT enabled at all */
 }
 
 /* output to USART0 */
