@@ -101,38 +101,9 @@ static void ioinit(void) {
     TCNT0 = 0;
     /* no external output, CTC */
     TCCR0A = 0x02;
-    /*
-     * Idealistically, keep
-     * (timer period) * 32 > (baud rate period * 10)
-     * to maintain the condition that
-     * every generated random byte need not be buffered.
-     * (Minimum 32 random source samplings are required
-     *  for generating a byte of random number output
-     *  and sending 10 bits to serial port are required.)
-     * On the other hand, making timer period shorter
-     * may not cause real harm, because:
-     * * The raw analog comparator output is mostly zero bits
-     * * busy waiting of the USART will prevent output overrun
-     */
-    /*
-     * The noise characteristics do not differ
-     * between the raw comparator sampling rates of
-     * 1us to 4096us
-     */
-    /*
-     * Setting the timer period too small
-     * may break the timer-driven interrupt routine
-     */
-    /* timer period: 5 microseconds = 80 machine cycles */
-    OCR0A = (5 * 2) - 1;
-    /* clk/8 (0.5 microseconds / count) */
-    /* start timer */
-    TCCR0B = 0x02;
 
-    /* enable OCIE0A interrupt */
-    TIMSK0 = 0x02;
-
-    /* enable interrupt after initialization*/
+    /* enable interrupt after initialization */
+    /* though no interrupt should be caused */
     sei();
 }
 
@@ -151,33 +122,6 @@ static void putchr(uint8_t c) {
     loop_until_bit_is_set(UCSR0A, UDRE0);
     /* Output the given char to USART0 */
     UDR0 = c;
-}
-
-/* shared variables between timer ISR and main() */
-/* volatile qualifier required */
-
-/*
- * sampling from the random source
- * with the timer0 COMPA ISR
- * Note: this ISR code is *interrupt driven*
- */
-
-/*
- * declare all ISR variables
- * as volatile and mapped into AVR registers
- */
-volatile register uint8_t samplecheck asm("r16");
-volatile register uint8_t sval asm("r15");
-
-ISR(TIMER0_COMPA_vect) {
-    /* if already sampled, do nothing */
-    if (samplecheck != 0) {
-        return;    
-    }
-    /* sample the value from Port D */
-    sval = PIND >> 6;
-    /* set sampled flag */
-    samplecheck = 1;
 }
 
 /*
@@ -200,17 +144,20 @@ int main() {
     uint8_t oval1 = 0;
     uint8_t flagandbit0 = 0;
     uint8_t flagandbit1 = 0;
+    uint8_t samplecheck = 0;
+    uint8_t sval = 0;
 
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
 
-    /* initialize the global register variables */
-    samplecheck = 0;
-    sval = 0;
-
     for (;;) {
-        /* check the sampled results */
-        if (samplecheck != 0) {
+        if (samplecheck == 0) {
+            /* sample the value from Port D if not*/
+            sval = PIND >> 6;
+            /* set sampled flag */
+            samplecheck = 1;
+        } else {
+            /* check the sampled results */
             /* check sval bit pair */
             if (state == 0) {
                 /* save the 1st bit pair to oval[01] */
