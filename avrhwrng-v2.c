@@ -60,11 +60,11 @@ static void ioinit(void) {
     PRR = 0x00;
 
     /*
-     * PDx: 
+     * PDx:
      * PD7/Pin 7 to input
      * PD6/Pin 6 to input
      * TXD/PD1/Pin 1 to output
-     * RXD/PD0/Pin 0 to input 
+     * RXD/PD0/Pin 0 to input
      * pullup enabled
      */
     DDRD = 0x3e;
@@ -142,7 +142,7 @@ static void ioinit(void) {
 static void putchr(uint8_t c) {
     /*
      * busy-waiting UDRE0
-     * note: 
+     * note:
      * if sampling byte generation rate is slower
      * than the byte sending rate to serial,
      * busy-waiting period will not happen
@@ -206,19 +206,14 @@ int main() {
         if (flagandbit != 0) {
             /* accumulate 8 bits */
             p = p + p;
-            if ((flagandbit & 0x01) != 0) {
-                /* Turn on the LED */
-                PORTB |= 0x20;
-                p++;
-            } else {
-                /* Turn off the LED */
-                PORTB &= 0xdf;
-            }
+            p += flagandbit & 0x01;
             i++;
             /* unlock the timer IRQ flags */
             flagandbit = 0;
             /* print accumulated value */
             if (i > 7) {
+                /* flip PORTB LED */
+                PORTB ^= 0x40;
                 p2 = p;
                 /* clear counters and buffer */
                 p = 0;
