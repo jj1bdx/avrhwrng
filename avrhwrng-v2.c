@@ -23,8 +23,8 @@
  */
 /*
  * for hardware randomizer connected between
- * AIN1 (PD7, digital pin 7) and
- * AIN0 (PD6, digital pin 6)
+ * PD7 (digital pin 7) and
+ * PD6 (digital pin 6)
  * of Arduino Duemilanove hardware (ATmega168)
  * by Kenji Rikitake
  */
@@ -60,15 +60,15 @@ static void ioinit(void) {
     PRR = 0x00;
 
     /*
-     * AIN1/PD7/Pin 7 to input
-     * AIN0/PD6/Pin 6 to input
+     * PDx: 
+     * PD7/Pin 7 to input
+     * PD6/Pin 6 to input
      * TXD/PD1/Pin 1 to output
      * RXD/PD0/Pin 0 to input 
-     * AIN1/AIN0 pullup off
+     * pullup enabled
      */
-
     DDRD = 0x3e;
-    PORTD = 0x3f;
+    PORTD = 0xff;
 
     /* PCx all output, pulled up */
     DDRC = 0xff;
@@ -78,8 +78,8 @@ static void ioinit(void) {
     DDRB = 0xff;
     PORTB = 0x3f;
 
-    /* comparator enabled, use AIN0, no interrupt */
-    ACSR = 0x00;
+    /* comparator disabled */
+    ACSR = 0x80;
 
     /* USART 0 */
     /* no USART IRQ, disable TX/RX */
@@ -125,7 +125,7 @@ static void ioinit(void) {
      * may break the timer-driven interrupt routine
      */
     /* timer period: 4 microseconds = 64 machine cycles */
-    OCR0A = (4*2) - 1;
+    OCR0A = (4 * 2) - 1;
     /* clk/8 (0.5 microseconds / count) */
     /* start timer */
     TCCR0B = 0x02;
@@ -160,8 +160,8 @@ static void putchr(uint8_t c) {
 /*
  * flagandbit states:
  * 0: no data
+ * 1: obtained '1'
  * 2: obtained '0'
- * 3: obtained '1'
  */
 
 /*
@@ -171,53 +171,18 @@ static void putchr(uint8_t c) {
  */
 
 /* obtain comparator values */
-#define comparator_input() (ACSR & _BV(ACO))
+/* #define comparator_input() (ACSR & _BV(ACO)) */
 
 /*
  * declare all ISR variables
  * as volatile and mapped into AVR registers
  */
 volatile register uint8_t flagandbit asm("r16");
-volatile register uint8_t state asm("r15");
-volatile register uint8_t oval asm("r14");
 
 ISR(TIMER0_COMPA_vect) {
-    /*
-     * do nothing when flag is set
-     */
-    if (flagandbit != 0) {
-        return;
-    }
-    /*
-     * if flag is not set,
-     * check the input state
-     *
-     * state: 0 -> 1st bit
-     * state: 1 -> 2nd bit
-     */
-    if (state == 0) {
-        /* save the 1st bit to oval */
-        oval = comparator_input();
-        /* set the 2nd bit state */
-        state = 1;
-    } else {
-        /* obtain the 2nd bit */
-        /* do nothing if two bits are the same */
-        if (comparator_input() != oval) {
-            /*
-             * set the output if the two bits are
-             * different with each other
-             */
-            if (oval == 0) {
-                /* {1st, 2nd} = {0, 1} */
-                flagandbit = 2;
-            } else {
-                /* {1st, 2nd} = {1, 0} */
-                flagandbit = 3;
-            }
-        }
-        /* set the 1st bit state */
-        state = 0;
+    flagandbit = PIND >> 6;
+    if (flagandbit == 3) {
+        flagandbit = 0;
     }
 }
 
@@ -235,8 +200,6 @@ int main() {
 
     /* initialize the global register variables */
     flagandbit = 0;
-    state = 0;
-    oval = 0;
 
     for (;;) {
         /* check whether a random bit is found */
