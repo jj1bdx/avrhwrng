@@ -101,6 +101,17 @@ static void ioinit(void) {
     TCNT0 = 0;
     /* no external output, CTC */
     TCCR0A = 0x02;
+    /*
+     * This timer defines the sampling timing rate
+     * from Port D (PD7 and PD6 together)
+     * The timer period should not be smaller than
+     * 110000 / 10 * 8 * 2 * 2 = 352000Hz or 2.84 microseconds
+     */
+    /* timer period: 46 machine cycles = 2.875 microseconds */
+    OCR0A = 46 - 1;
+    /* clk (16MHz or 0.0625 microsecond / count) */
+    /* start timer */
+    TCCR0B = 0x01;
 
     /* Note: interrupts are NOT enabled at all */
 }
@@ -142,55 +153,53 @@ int main() {
     uint8_t oval1 = 0;
     uint8_t flagandbit0 = 0;
     uint8_t flagandbit1 = 0;
-    uint8_t samplecheck = 0;
     uint8_t sval = 0;
 
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
 
     for (;;) {
-        if (samplecheck == 0) {
-            /* sample the value from Port D if not*/
-            sval = PIND >> 6;
-            /* set sampled flag */
-            samplecheck = 1;
+        /* wait until OCF0A in TIFR0 enabled */
+        if ((TIFR0 & 0x02) == 0) {
+            continue;
+        }
+        /* Clear the OCF0A flag in TIFR0 */
+        TIFR0 |= 0x02;
+        /* sample the value from Port D if not*/
+        sval = PIND >> 6;
+        /* check the sampled results */
+        /* check sval bit pair */
+        if (state == 0) {
+            /* save the 1st bit pair to oval[01] */
+            oval0 = sval & 0x01;
+            oval1 = sval & 0x02;
+            /* set the 2nd bit state */
+        state = 1;
         } else {
-            /* check the sampled results */
-            /* check sval bit pair */
-            if (state == 0) {
-                /* save the 1st bit pair to oval[01] */
-                oval0 = sval & 0x01;
-                oval1 = sval & 0x02;
-                /* set the 2nd bit state */
-                state = 1;
-            } else {
-                /* obtain the 2nd bit pair */
-                /* do nothing if two bits are the same */
-                if ((sval & 0x01) != oval0) {
-                    if (oval0 == 0) {
-                        /* {1st, 2nd} = {0, 1} */
-                        flagandbit0 = 1;
-                    } else {
-                        /* {1st, 2nd} = {1, 0} */
-                        flagandbit0 = 2;
-                    }
+            /* obtain the 2nd bit pair */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x01) != oval0) {
+                if (oval0 == 0) {
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit0 = 1;
+                } else {
+                    /* {1st, 2nd} = {1, 0} */
+                    flagandbit0 = 2;
                 }
-                /* obtain the 2nd bit */
-                /* do nothing if two bits are the same */
-                if ((sval & 0x02) != oval1) {
-                    if (oval1 == 0) {
-                        /* {1st, 2nd} = {0, 1} */
-                        flagandbit1 = 1;
-                    } else {
-                        /* {1st, 2nd} = {1, 0} */
-                        flagandbit1 = 2;
-                    }
-                }
-                /* set the 1st bit state */
-                state = 0;
             }
-            /* reset the interrupt allowance flag */
-            samplecheck = 0;
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+                if (oval1 == 0) {
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit1 = 1;
+                } else {
+                    /* {1st, 2nd} = {1, 0} */
+                    flagandbit1 = 2;
+                }
+            }
+            /* set the 1st bit state */
+            state = 0;
         }
         /* check whether a random bit is found on PD6 */
         if (flagandbit0 != 0) {
