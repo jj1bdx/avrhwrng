@@ -11,8 +11,14 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 Two independent noise generator circuits, amplified to the CMOS digital level,
 are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).
 
+The Timer 0 is set to CTC mode with the closest larger value to the theoretical
+limit, 46 machine cycles or 2.875 microseconds. The theoretical limit of the
+speed is 352000bps or 2.84 microseconds, which is equal to 11000 bytes * 8
+bits/byte * 2 (for von-Neumann test) * 2 (for XORing byte filter).
+
 The MCU runs the following program without any hardware interrupt as an infinite loop:
 
+* Wait for the Timer 0 compare match happens (so that the sampling timing will not exceed the value given to Timer 0
 * Sample the pin inputs of PD6 and PD7
 * Treat the sampled two-bit pair into two independent bit streams
 * Apply the von Neumann algorithm for two consecutive sampled bits *independently* for each bit stream
