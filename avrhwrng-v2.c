@@ -253,7 +253,7 @@ int main() {
             p = p + p;
             p += flagandbit0 & 0x01;
             i++;
-            /* unlock the timer IRQ flags */
+            /* reset the von-Neumann check flag for PD6 */
             flagandbit0 = 0;
         }
         /* print accumulated value */
@@ -281,7 +281,7 @@ int main() {
             p = p + p;
             p += flagandbit1 & 0x01;
             i++;
-            /* unlock the timer IRQ flags */
+            /* reset the von-Neumann check flag for PD7 */
             flagandbit1 = 0;
         }
         /* print accumulated value */
