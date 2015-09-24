@@ -9,21 +9,24 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 ## How it works on Version 2
 
 Two independent noise generator circuits, amplified to the CMOS digital level,
-are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).  The MCU
-samples the pin inputs in a fixed frequency of the Timer 0 interrupts (5
-microseconds = 200kHz).
+are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).
 
-The sampled output bit pair stream from AVR analog comparator is filtered
-through von Neumann algorithm of two consecutive sampled bits into two
-independent bit streams. Each of the bit streams is filtered again into
-byte streams, and the byte streams is filtered for each two-byte pair by
-XORing the bytes of the pair with each other.
+The MCU runs the following program without any hardware interrupt as an infinite loop:
+
+* Sample the pin inputs of PD6 and PD7
+* Treat the sampled two-bit pair into two independent bit streams
+* Apply the von Neumann algorithm for two consecutive sampled bits *independently* for each bit stream
+* Accumulate valid bits from two two bit streams into single byte stream
+* Filter the byte stream for each consecutive two-byte pair by XORing the bytes of the pair with each other
+* Wait for finishing the USART0 transmission (running in 111111bps for 115200bps)
+* Send each filtered byte to USART0
+* Go to the top and do it all over again
 
 The code will run either on ATmega168 or ATmega328P.
 
 ## Changes for Version 2
 
-* 24-SEP-2015: Initial revision, changed PD7/PD6 to digital input, reduced LED blinking from each output bit to each output *byte*
+* 24-SEP-2015: Initial revision, change PD7/PD6 to digital input, reduce LED blinking from each output bit to each output *byte*, remove interrupt-driven code
 
 ## How to compile
 
@@ -37,8 +40,7 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## Actual output rate for Version 2
 
-* Sampling rate: 5 us = 200kHz
-* Output rate for v2rev1: ~5800bytes/sec = 46.4kHz
+* Output rate for v2rev1: ~11111bytes/sec = 88.8kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
