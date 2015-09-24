@@ -9,18 +9,21 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 ## How it works on Version 2
 
 Two independent noise generator circuits, amplified to the CMOS digital level,
-are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7). 
-The MCU samples the pin inputs in a fixed frequency of the Timer 0 interrupts
-(4 microseconds = 250kHz). The sampled data from the two pins are filtered
-through von Neumann algorithm into a byte stream.  Each of the two-byte pairs
-of the byte stream is again filtered into one-byte stream by XORing the bytes
-of the pair with each other.
+are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).  The MCU
+samples the pin inputs in a fixed frequency of the Timer 0 interrupts (5
+microseconds = 200kHz).
+
+The sampled output bit pair stream from AVR analog comparator is filtered
+through von Neumann algorithm of two consecutive sampled bits into two
+independent bit streams. Each of the bit streams is filtered again into
+byte streams, and the byte streams is filtered for each two-byte pair by
+XORing the bytes of the pair with each other.
 
 The code will run either on ATmega168 or ATmega328P.
 
 ## Changes for Version 2
 
-* 24-SEP-2015: Initial revision, changed PD7/PD6 to digital input, reduced LED blinking from each bits to each *bytes*
+* 24-SEP-2015: Initial revision, changed PD7/PD6 to digital input, reduced LED blinking from each output bit to each output *byte*
 
 ## How to compile
 
@@ -34,8 +37,8 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## Actual output rate for Version 2
 
-* Sampling rate: 4 us = 250kHz
-* Output rate for v2rev1: ~7500bytes/sec = 60kHz
+* Sampling rate: 5 us = 200kHz
+* Output rate for v2rev1: ~5800bytes/sec = 46.4kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
@@ -57,7 +60,7 @@ The code will run either on ATmega168 or ATmega328P.
 Two independent noise generator circuits are connected to ATmega168/328P's
 analog comparator inputs (AIN0/AIN1, PD6/PD7, or Pin 6/7). The MCU samples the
 comparator output in a fixed frequency of the Timer 0 interrupts (4
-microseconds = 250kHz). 
+microseconds = 250kHz).
 
 The sampled output bit stream from AVR analog comparator is filtered through
 von Neumann algorithm of two adjacent sampled bits into a byte stream. Each of
