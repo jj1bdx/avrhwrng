@@ -32,6 +32,7 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## Changes for Version 2
 
+* 25-SEP-2015: Add Timer 0 synchronization code
 * 24-SEP-2015: Initial revision, change PD7/PD6 to digital input, reduce LED blinking from each output bit to each output *byte*, remove interrupt-driven code
 
 ## How to compile
