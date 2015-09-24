@@ -124,8 +124,8 @@ static void ioinit(void) {
      * Setting the timer period too small
      * may break the timer-driven interrupt routine
      */
-    /* timer period: 4 microseconds = 64 machine cycles */
-    OCR0A = (4 * 2) - 1;
+    /* timer period: 5 microseconds = 80 machine cycles */
+    OCR0A = (5 * 2) - 1;
     /* clk/8 (0.5 microseconds / count) */
     /* start timer */
     TCCR0B = 0x02;
@@ -158,33 +158,27 @@ static void putchr(uint8_t c) {
 /* volatile qualifier required */
 
 /*
- * flagandbit states:
- * 0: no data
- * 1: obtained '1'
- * 2: obtained '0'
- */
-
-/*
  * sampling from the random source
  * with the timer0 COMPA ISR
  * Note: this ISR code is *interrupt driven*
  */
 
-/* obtain comparator values */
-/* #define comparator_input() (ACSR & _BV(ACO)) */
-
 /*
  * declare all ISR variables
  * as volatile and mapped into AVR registers
  */
-volatile register uint8_t flagandbit asm("r16");
+volatile register uint8_t samplecheck asm("r16");
+volatile register uint8_t sval asm("r15");
 
 ISR(TIMER0_COMPA_vect) {
-    flagandbit = PIND >> 6;
-    if (flagandbit == 3) {
-        flagandbit = 0;
+    if (samplecheck != 0) {
+        return;    
     }
+    /* sample the value from Port D */
+    sval = PIND >> 6;
+    samplecheck = 1;
 }
+
 
 /* main function */
 
@@ -194,40 +188,111 @@ int main() {
     uint8_t j = 0;
     uint8_t p2 = 0;
     uint8_t p2b = 0;
+    uint8_t state = 0;
+    uint8_t oval0 = 0;
+    uint8_t oval1 = 0;
+    uint8_t flagandbit0 = 0;
+    uint8_t flagandbit1 = 0;
 
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
 
     /* initialize the global register variables */
-    flagandbit = 0;
+    samplecheck = 0;
+    sval = 0;
 
     for (;;) {
+        if (samplecheck != 0) {
+            /* Check sval bit pair */
+            if (state == 0) {
+                /* save the 1st bit pair to oval[01] */
+                oval0 = sval & 0x01;
+                oval1 = sval & 0x02;
+                /* set the 2nd bit state */
+                state = 1;
+            } else {
+                /* obtain the 2nd bit pair */
+                /* do nothing if two bits are the same */
+                if ((sval & 0x01) != oval0) {
+                    if (oval0 == 0) {
+                        /* {1st, 2nd} = {0, 1} */
+                        flagandbit0 = 1;
+                    } else {
+                        /* {1st, 2nd} = {1, 0} */
+                        flagandbit0 = 2;
+                    }
+                }
+                /* obtain the 2nd bit */
+                /* do nothing if two bits are the same */
+                if ((sval & 0x02) != oval1) {
+                    if (oval1 == 0) {
+                        /* {1st, 2nd} = {0, 1} */
+                        flagandbit1 = 1;
+                    } else {
+                        /* {1st, 2nd} = {1, 0} */
+                        flagandbit1 = 2;
+                    }
+                }
+                /* set the 1st bit state */
+                state = 0;
+            }
+            /* reset the interrupt allowance flag */
+            samplecheck = 0;
+        }
         /* check whether a random bit is found */
-        if (flagandbit != 0) {
+        if (flagandbit0 != 0) {
             /* accumulate 8 bits */
             p = p + p;
-            p += flagandbit & 0x01;
+            p += flagandbit0 & 0x01;
             i++;
             /* unlock the timer IRQ flags */
-            flagandbit = 0;
-            /* print accumulated value */
-            if (i > 7) {
-                /* flip PORTB LED */
-                PORTB ^= 0x40;
-                p2 = p;
-                /* clear counters and buffer */
-                p = 0;
-                i = 0;
-                /* change byte xor machine state */
-                j++;
-                if (j > 1) {
-                    j = 0;
-                    /* and output the result in a raw byte*/
-                    putchr(p2b ^ p2);
-                } else {
-                    /* save the output byte and keep on generating */
-                    p2b = p2;
-                }
+            flagandbit0 = 0;
+        }
+        /* print accumulated value */
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+            if (j > 1) {
+                j = 0;
+                /* and output the result in a raw byte*/
+                putchr(p2b ^ p2);
+            } else {
+                /* save the output byte and keep on generating */
+                p2b = p2;
+            }
+        }
+        /* check whether a random bit is found */
+        if (flagandbit1 != 0) {
+            /* accumulate 8 bits */
+            p = p + p;
+            p += flagandbit1 & 0x01;
+            i++;
+            /* unlock the timer IRQ flags */
+            flagandbit1 = 0;
+        }
+        /* print accumulated value */
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+            if (j > 1) {
+                j = 0;
+                /* and output the result in a raw byte*/
+                putchr(p2b ^ p2);
+            } else {
+                /* save the output byte and keep on generating */
+                p2b = p2;
             }
         }
     }
