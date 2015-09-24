@@ -37,6 +37,7 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## How to compile
 
+    # Use GNU Make (gmake on FreeBSD)
     make
 
 ## how to write the image
@@ -47,7 +48,7 @@ The code will run either on ATmega168 or ATmega328P.
 
 ## Actual output rate for Version 2
 
-* Output rate for v2rev1: ~11000bytes/sec = 88kHz
+* Output rate for v2rev1: ~10800bytes/sec = 86.4kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
