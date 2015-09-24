@@ -22,9 +22,8 @@
  * THE SOFTWARE.
  */
 /*
- * for hardware randomizer connected between
- * PD7 (digital pin 7) and
- * PD6 (digital pin 6)
+ * for hardware randomizer connected to
+ * PD7 (digital pin 7) and PD6 (digital pin 6)
  * of Arduino Duemilanove hardware (ATmega168)
  * by Kenji Rikitake
  */
@@ -171,14 +170,22 @@ volatile register uint8_t samplecheck asm("r16");
 volatile register uint8_t sval asm("r15");
 
 ISR(TIMER0_COMPA_vect) {
+    /* if already sampled, do nothing */
     if (samplecheck != 0) {
         return;    
     }
     /* sample the value from Port D */
     sval = PIND >> 6;
+    /* set sampled flag */
     samplecheck = 1;
 }
 
+/*
+ * flagandbit[01] states:
+ * 0: no valid data bit
+ * 1: obtained '1'
+ * 2: obtained '0'
+ */
 
 /* main function */
 
@@ -202,8 +209,9 @@ int main() {
     sval = 0;
 
     for (;;) {
+        /* check the sampled results */
         if (samplecheck != 0) {
-            /* Check sval bit pair */
+            /* check sval bit pair */
             if (state == 0) {
                 /* save the 1st bit pair to oval[01] */
                 oval0 = sval & 0x01;
@@ -239,7 +247,7 @@ int main() {
             /* reset the interrupt allowance flag */
             samplecheck = 0;
         }
-        /* check whether a random bit is found */
+        /* check whether a random bit is found on PD6 */
         if (flagandbit0 != 0) {
             /* accumulate 8 bits */
             p = p + p;
@@ -267,7 +275,7 @@ int main() {
                 p2b = p2;
             }
         }
-        /* check whether a random bit is found */
+        /* check whether a random bit is found on PD7 */
         if (flagandbit1 != 0) {
             /* accumulate 8 bits */
             p = p + p;
