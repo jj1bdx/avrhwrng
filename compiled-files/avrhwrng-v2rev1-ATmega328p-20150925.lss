@@ -1,0 +1,586 @@
+
+avrhwrng-v2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  000001f4  00000268  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000001f4  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .stab         00000a08  00000000  00000000  00000268  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000cab  00000000  00000000  00000c70  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .comment      00000011  00000000  00000000  0000191b  2**0
+                  CONTENTS, READONLY
+  5 .debug_info   000005f4  00000000  00000000  0000192c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005a2  00000000  00000000  00001f20  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000001d  00000000  00000000  000024c2  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000208  00000000  00000000  000024df  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 f8 00 	jmp	0x1f0	; 0x1f0 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+
+/* initialize IO ports */
+static void ioinit(void) {
+
+    /* disable interrupt before initialization*/
+    cli();
+  80:	f8 94       	cli
+    /*
+     * forced initialization
+     * of unnecessary interrupts
+     */
+
+    MCUCR = 0x00;
+  82:	15 be       	out	0x35, r1	; 53
+    EICRA = 0x00;
+  84:	10 92 69 00 	sts	0x0069, r1
+    EIMSK = 0x00;
+  88:	1d ba       	out	0x1d, r1	; 29
+    TIMSK0 = 0x00;
+  8a:	10 92 6e 00 	sts	0x006E, r1
+    TIMSK1 = 0x00;
+  8e:	10 92 6f 00 	sts	0x006F, r1
+    TIMSK2 = 0x00;
+  92:	10 92 70 00 	sts	0x0070, r1
+    PCMSK0 = 0x00;
+  96:	10 92 6b 00 	sts	0x006B, r1
+    PCMSK1 = 0x00;
+  9a:	10 92 6c 00 	sts	0x006C, r1
+    PCMSK2 = 0x00;
+  9e:	10 92 6d 00 	sts	0x006D, r1
+    PCICR = 0x00;
+  a2:	10 92 68 00 	sts	0x0068, r1
+    PRR = 0x00;
+  a6:	10 92 64 00 	sts	0x0064, r1
+     * PD6/Pin 6 to input
+     * TXD/PD1/Pin 1 to output
+     * RXD/PD0/Pin 0 to input
+     * pullup enabled
+     */
+    DDRD = 0x3e;
+  aa:	8e e3       	ldi	r24, 0x3E	; 62
+  ac:	8a b9       	out	0x0a, r24	; 10
+    PORTD = 0xff;
+  ae:	8f ef       	ldi	r24, 0xFF	; 255
+  b0:	8b b9       	out	0x0b, r24	; 11
+
+    /* PCx all output, pulled up */
+    DDRC = 0xff;
+  b2:	87 b9       	out	0x07, r24	; 7
+    PORTC = 0xff;
+  b4:	88 b9       	out	0x08, r24	; 8
+
+    /* PB5 = LED on Arduino 2009 */
+    DDRB = 0xff;
+  b6:	84 b9       	out	0x04, r24	; 4
+    PORTB = 0x3f;
+  b8:	8f e3       	ldi	r24, 0x3F	; 63
+  ba:	85 b9       	out	0x05, r24	; 5
+
+    /* comparator disabled */
+    ACSR = 0x80;
+  bc:	80 e8       	ldi	r24, 0x80	; 128
+  be:	80 bf       	out	0x30, r24	; 48
+
+    /* USART 0 */
+    /* no USART IRQ, disable TX/RX */
+    UCSR0B = 0x00;
+  c0:	10 92 c1 00 	sts	0x00C1, r1
+    /* clk 1x */
+    UCSR0A = 0x00;
+  c4:	10 92 c0 00 	sts	0x00C0, r1
+    /* async, no parity, 8bit */
+    UCSR0C = 0x06;
+  c8:	86 e0       	ldi	r24, 0x06	; 6
+  ca:	80 93 c2 00 	sts	0x00C2, r24
+    /* baud rate (11520bps, 16MHz, U2Xn=1) */
+    /* real rate: 111111bps (9 microsecs/bit) */
+    UBRR0H = 0;
+  ce:	10 92 c5 00 	sts	0x00C5, r1
+    UBRR0L = 8;
+  d2:	88 e0       	ldi	r24, 0x08	; 8
+  d4:	80 93 c4 00 	sts	0x00C4, r24
+    /* no USART IRQ, enable TX (no RX) */
+    UCSR0B = 0x08;
+  d8:	80 93 c1 00 	sts	0x00C1, r24
+
+    /* Timer 0 */
+    /* timer stop */
+    TCCR0B = 0x00;
+  dc:	15 bc       	out	0x25, r1	; 37
+    /* reset counter */
+    TCNT0 = 0;
+  de:	16 bc       	out	0x26, r1	; 38
+    /* no external output, CTC */
+    TCCR0A = 0x02;
+  e0:	82 e0       	ldi	r24, 0x02	; 2
+  e2:	84 bd       	out	0x24, r24	; 36
+     * from Port D (PD7 and PD6 together)
+     * The timer period should not be smaller than
+     * 110000 / 10 * 8 * 2 * 2 = 352000Hz or 2.84 microseconds
+     */
+    /* timer period: 46 machine cycles = 2.875 microseconds */
+    OCR0A = 46 - 1;
+  e4:	8d e2       	ldi	r24, 0x2D	; 45
+  e6:	87 bd       	out	0x27, r24	; 39
+    /* clk (16MHz or 0.0625 microsecond / count) */
+    /* start timer */
+    TCCR0B = 0x01;
+  e8:	81 e0       	ldi	r24, 0x01	; 1
+  ea:	85 bd       	out	0x25, r24	; 37
+    uint8_t j = 0;
+    uint8_t p2 = 0;
+    uint8_t p2b = 0;
+    uint8_t state = 0;
+    uint8_t oval0 = 0;
+    uint8_t oval1 = 0;
+  ec:	60 e0       	ldi	r22, 0x00	; 0
+    uint8_t p = 0;
+    uint8_t j = 0;
+    uint8_t p2 = 0;
+    uint8_t p2b = 0;
+    uint8_t state = 0;
+    uint8_t oval0 = 0;
+  ee:	70 e0       	ldi	r23, 0x00	; 0
+    uint8_t i = 0;
+    uint8_t p = 0;
+    uint8_t j = 0;
+    uint8_t p2 = 0;
+    uint8_t p2b = 0;
+    uint8_t state = 0;
+  f0:	50 e0       	ldi	r21, 0x00	; 0
+int main() {
+    uint8_t i = 0;
+    uint8_t p = 0;
+    uint8_t j = 0;
+    uint8_t p2 = 0;
+    uint8_t p2b = 0;
+  f2:	a0 e0       	ldi	r26, 0x00	; 0
+/* main function */
+
+int main() {
+    uint8_t i = 0;
+    uint8_t p = 0;
+    uint8_t j = 0;
+  f4:	40 e0       	ldi	r20, 0x00	; 0
+
+/* main function */
+
+int main() {
+    uint8_t i = 0;
+    uint8_t p = 0;
+  f6:	80 e0       	ldi	r24, 0x00	; 0
+ */
+
+/* main function */
+
+int main() {
+    uint8_t i = 0;
+  f8:	20 e0       	ldi	r18, 0x00	; 0
+            flagandbit1 = 0;
+        }
+        /* print accumulated value */
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+  fa:	f0 e4       	ldi	r31, 0x40	; 64
+    /* initialize ports, timers, serial, and IRQ */
+    ioinit();
+
+    for (;;) {
+        /* wait until OCF0A in TIFR0 enabled */
+        if ((TIFR0 & 0x02) == 0) {
+  fc:	a9 9b       	sbis	0x15, 1	; 21
+  fe:	fe cf       	rjmp	.-4      	; 0xfc <main+0x7c>
+            continue;
+        }
+        /* Clear the OCF0A flag in TIFR0 */
+        TIFR0 |= 0x02;
+ 100:	a9 9a       	sbi	0x15, 1	; 21
+        /* sample the value from Port D if not*/
+        sval = PIND >> 6;
+ 102:	99 b1       	in	r25, 0x09	; 9
+ 104:	92 95       	swap	r25
+ 106:	96 95       	lsr	r25
+ 108:	96 95       	lsr	r25
+ 10a:	93 70       	andi	r25, 0x03	; 3
+        /* check the sampled results */
+        /* check sval bit pair */
+        if (state == 0) {
+ 10c:	51 11       	cpse	r21, r1
+ 10e:	3a c0       	rjmp	.+116    	; 0x184 <main+0x104>
+            /* save the 1st bit pair to oval[01] */
+            oval0 = sval & 0x01;
+ 110:	79 2f       	mov	r23, r25
+ 112:	71 70       	andi	r23, 0x01	; 1
+            oval1 = sval & 0x02;
+ 114:	69 2f       	mov	r22, r25
+ 116:	62 70       	andi	r22, 0x02	; 2
+ 118:	30 e0       	ldi	r19, 0x00	; 0
+            /* set the 2nd bit state */
+        state = 1;
+ 11a:	51 e0       	ldi	r21, 0x01	; 1
+            i++;
+            /* reset the von-Neumann check flag for PD6 */
+            flagandbit0 = 0;
+        }
+        /* print accumulated value */
+        if (i > 7) {
+ 11c:	28 30       	cpi	r18, 0x08	; 8
+ 11e:	c0 f0       	brcs	.+48     	; 0x150 <main+0xd0>
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+ 120:	95 b1       	in	r25, 0x05	; 5
+ 122:	9f 27       	eor	r25, r31
+ 124:	95 b9       	out	0x05, r25	; 5
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+ 126:	4f 5f       	subi	r20, 0xFF	; 255
+            if (j > 1) {
+ 128:	42 30       	cpi	r20, 0x02	; 2
+ 12a:	08 f4       	brcc	.+2      	; 0x12e <main+0xae>
+ 12c:	57 c0       	rjmp	.+174    	; 0x1dc <main+0x15c>
+                j = 0;
+                /* and output the result in a raw byte*/
+                putchr(p2b ^ p2);
+ 12e:	98 2f       	mov	r25, r24
+ 130:	9a 27       	eor	r25, r26
+     * than the byte sending rate to serial,
+     * busy-waiting period will not happen
+     * many times, so this doesn't have to be
+     * interrupt-driven
+     */
+    loop_until_bit_is_set(UCSR0A, UDRE0);
+ 132:	80 91 c0 00 	lds	r24, 0x00C0
+ 136:	85 ff       	sbrs	r24, 5
+ 138:	fc cf       	rjmp	.-8      	; 0x132 <main+0xb2>
+    /* Output the given char to USART0 */
+    UDR0 = c;
+ 13a:	90 93 c6 00 	sts	0x00C6, r25
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+            if (j > 1) {
+                j = 0;
+ 13e:	40 e0       	ldi	r20, 0x00	; 0
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+ 140:	80 e0       	ldi	r24, 0x00	; 0
+            i = 0;
+ 142:	20 e0       	ldi	r18, 0x00	; 0
+                /* save the output byte and keep on generating */
+                p2b = p2;
+            }
+        }
+        /* check whether a random bit is found on PD7 */
+        if (flagandbit1 != 0) {
+ 144:	33 23       	and	r19, r19
+ 146:	d1 f2       	breq	.-76     	; 0xfc <main+0x7c>
+            /* accumulate 8 bits */
+            p = p + p;
+            p += flagandbit1 & 0x01;
+ 148:	83 2f       	mov	r24, r19
+ 14a:	81 70       	andi	r24, 0x01	; 1
+            i++;
+ 14c:	21 e0       	ldi	r18, 0x01	; 1
+ 14e:	d6 cf       	rjmp	.-84     	; 0xfc <main+0x7c>
+                /* save the output byte and keep on generating */
+                p2b = p2;
+            }
+        }
+        /* check whether a random bit is found on PD7 */
+        if (flagandbit1 != 0) {
+ 150:	33 23       	and	r19, r19
+ 152:	a1 f2       	breq	.-88     	; 0xfc <main+0x7c>
+            /* accumulate 8 bits */
+            p = p + p;
+ 154:	88 0f       	add	r24, r24
+            p += flagandbit1 & 0x01;
+ 156:	31 70       	andi	r19, 0x01	; 1
+ 158:	83 0f       	add	r24, r19
+            i++;
+ 15a:	2f 5f       	subi	r18, 0xFF	; 255
+            /* reset the von-Neumann check flag for PD7 */
+            flagandbit1 = 0;
+        }
+        /* print accumulated value */
+        if (i > 7) {
+ 15c:	28 30       	cpi	r18, 0x08	; 8
+ 15e:	70 f2       	brcs	.-100    	; 0xfc <main+0x7c>
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+ 160:	95 b1       	in	r25, 0x05	; 5
+ 162:	9f 27       	eor	r25, r31
+ 164:	95 b9       	out	0x05, r25	; 5
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+ 166:	4f 5f       	subi	r20, 0xFF	; 255
+            if (j > 1) {
+ 168:	42 30       	cpi	r20, 0x02	; 2
+ 16a:	a0 f1       	brcs	.+104    	; 0x1d4 <main+0x154>
+                j = 0;
+                /* and output the result in a raw byte*/
+                putchr(p2b ^ p2);
+ 16c:	98 2f       	mov	r25, r24
+ 16e:	9a 27       	eor	r25, r26
+     * than the byte sending rate to serial,
+     * busy-waiting period will not happen
+     * many times, so this doesn't have to be
+     * interrupt-driven
+     */
+    loop_until_bit_is_set(UCSR0A, UDRE0);
+ 170:	80 91 c0 00 	lds	r24, 0x00C0
+ 174:	85 ff       	sbrs	r24, 5
+ 176:	fc cf       	rjmp	.-8      	; 0x170 <main+0xf0>
+    /* Output the given char to USART0 */
+    UDR0 = c;
+ 178:	90 93 c6 00 	sts	0x00C6, r25
+            p = 0;
+            i = 0;
+            /* change byte xor machine state */
+            j++;
+            if (j > 1) {
+                j = 0;
+ 17c:	40 e0       	ldi	r20, 0x00	; 0
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+ 17e:	80 e0       	ldi	r24, 0x00	; 0
+            i = 0;
+ 180:	20 e0       	ldi	r18, 0x00	; 0
+ 182:	bc cf       	rjmp	.-136    	; 0xfc <main+0x7c>
+            /* set the 2nd bit state */
+        state = 1;
+        } else {
+            /* obtain the 2nd bit pair */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x01) != oval0) {
+ 184:	39 2f       	mov	r19, r25
+ 186:	31 70       	andi	r19, 0x01	; 1
+ 188:	37 17       	cp	r19, r23
+ 18a:	e1 f0       	breq	.+56     	; 0x1c4 <main+0x144>
+                if (oval0 == 0) {
+ 18c:	71 11       	cpse	r23, r1
+ 18e:	11 c0       	rjmp	.+34     	; 0x1b2 <main+0x132>
+ 190:	51 e0       	ldi	r21, 0x01	; 1
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit0 = 1;
+ 192:	e1 e0       	ldi	r30, 0x01	; 1
+                    flagandbit0 = 2;
+                }
+            }
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+ 194:	92 70       	andi	r25, 0x02	; 2
+ 196:	96 17       	cp	r25, r22
+ 198:	89 f0       	breq	.+34     	; 0x1bc <main+0x13c>
+                if (oval1 == 0) {
+ 19a:	66 23       	and	r22, r22
+ 19c:	89 f0       	breq	.+34     	; 0x1c0 <main+0x140>
+            }
+            /* set the 1st bit state */
+            state = 0;
+        }
+        /* check whether a random bit is found on PD6 */
+        if (flagandbit0 != 0) {
+ 19e:	ee 23       	and	r30, r30
+ 1a0:	b1 f0       	breq	.+44     	; 0x1ce <main+0x14e>
+                if (oval1 == 0) {
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit1 = 1;
+                } else {
+                    /* {1st, 2nd} = {1, 0} */
+                    flagandbit1 = 2;
+ 1a2:	32 e0       	ldi	r19, 0x02	; 2
+ 1a4:	5e 2f       	mov	r21, r30
+ 1a6:	51 70       	andi	r21, 0x01	; 1
+            state = 0;
+        }
+        /* check whether a random bit is found on PD6 */
+        if (flagandbit0 != 0) {
+            /* accumulate 8 bits */
+            p = p + p;
+ 1a8:	88 0f       	add	r24, r24
+            p += flagandbit0 & 0x01;
+ 1aa:	85 0f       	add	r24, r21
+            i++;
+ 1ac:	2f 5f       	subi	r18, 0xFF	; 255
+ 1ae:	50 e0       	ldi	r21, 0x00	; 0
+ 1b0:	b5 cf       	rjmp	.-150    	; 0x11c <main+0x9c>
+        state = 1;
+        } else {
+            /* obtain the 2nd bit pair */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x01) != oval0) {
+                if (oval0 == 0) {
+ 1b2:	50 e0       	ldi	r21, 0x00	; 0
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit0 = 1;
+                } else {
+                    /* {1st, 2nd} = {1, 0} */
+                    flagandbit0 = 2;
+ 1b4:	e2 e0       	ldi	r30, 0x02	; 2
+                }
+            }
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+ 1b6:	92 70       	andi	r25, 0x02	; 2
+ 1b8:	96 13       	cpse	r25, r22
+ 1ba:	ef cf       	rjmp	.-34     	; 0x19a <main+0x11a>
+ 1bc:	30 e0       	ldi	r19, 0x00	; 0
+ 1be:	f4 cf       	rjmp	.-24     	; 0x1a8 <main+0x128>
+                if (oval1 == 0) {
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit1 = 1;
+ 1c0:	31 e0       	ldi	r19, 0x01	; 1
+ 1c2:	f0 cf       	rjmp	.-32     	; 0x1a4 <main+0x124>
+                    flagandbit0 = 2;
+                }
+            }
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+ 1c4:	92 70       	andi	r25, 0x02	; 2
+ 1c6:	96 17       	cp	r25, r22
+ 1c8:	81 f0       	breq	.+32     	; 0x1ea <main+0x16a>
+                if (oval1 == 0) {
+ 1ca:	66 23       	and	r22, r22
+ 1cc:	59 f0       	breq	.+22     	; 0x1e4 <main+0x164>
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit1 = 1;
+                } else {
+                    /* {1st, 2nd} = {1, 0} */
+                    flagandbit1 = 2;
+ 1ce:	32 e0       	ldi	r19, 0x02	; 2
+ 1d0:	50 e0       	ldi	r21, 0x00	; 0
+ 1d2:	a4 cf       	rjmp	.-184    	; 0x11c <main+0x9c>
+        }
+        /* check whether a random bit is found on PD7 */
+        if (flagandbit1 != 0) {
+            /* accumulate 8 bits */
+            p = p + p;
+            p += flagandbit1 & 0x01;
+ 1d4:	a8 2f       	mov	r26, r24
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+ 1d6:	80 e0       	ldi	r24, 0x00	; 0
+            i = 0;
+ 1d8:	20 e0       	ldi	r18, 0x00	; 0
+ 1da:	90 cf       	rjmp	.-224    	; 0xfc <main+0x7c>
+                j = 0;
+                /* and output the result in a raw byte*/
+                putchr(p2b ^ p2);
+            } else {
+                /* save the output byte and keep on generating */
+                p2b = p2;
+ 1dc:	a8 2f       	mov	r26, r24
+        if (i > 7) {
+            /* flip PORTB LED */
+            PORTB ^= 0x40;
+            p2 = p;
+            /* clear counters and buffer */
+            p = 0;
+ 1de:	80 e0       	ldi	r24, 0x00	; 0
+            i = 0;
+ 1e0:	20 e0       	ldi	r18, 0x00	; 0
+ 1e2:	b0 cf       	rjmp	.-160    	; 0x144 <main+0xc4>
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+                if (oval1 == 0) {
+                    /* {1st, 2nd} = {0, 1} */
+                    flagandbit1 = 1;
+ 1e4:	31 e0       	ldi	r19, 0x01	; 1
+                }
+            }
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+                if (oval1 == 0) {
+ 1e6:	50 e0       	ldi	r21, 0x00	; 0
+ 1e8:	99 cf       	rjmp	.-206    	; 0x11c <main+0x9c>
+                    flagandbit0 = 2;
+                }
+            }
+            /* obtain the 2nd bit */
+            /* do nothing if two bits are the same */
+            if ((sval & 0x02) != oval1) {
+ 1ea:	30 e0       	ldi	r19, 0x00	; 0
+ 1ec:	50 e0       	ldi	r21, 0x00	; 0
+ 1ee:	96 cf       	rjmp	.-212    	; 0x11c <main+0x9c>
+
+000001f0 <_exit>:
+ 1f0:	f8 94       	cli
+
+000001f2 <__stop_program>:
+ 1f2:	ff cf       	rjmp	.-2      	; 0x1f2 <__stop_program>
