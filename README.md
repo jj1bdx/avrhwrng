@@ -34,6 +34,9 @@ byte stream.
 
 The code will run either on ATmega168 or ATmega328P. 
 
+See `noiseshield-v2/` directory for the schematics (drawn by xcircuit). The
+entire circuits can be built on a standard Arduino prototype board.
+
 ## Changes for Version 2
 
 * 25-SEP-2015: Add Timer 0 synchronization code
