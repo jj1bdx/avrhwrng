@@ -6,6 +6,11 @@ for a shield (extended piece of hardware) for Arduino Duemilanove / Arduino UNO.
 Note: the code is *not* written in the Arduino programming framework; it
 is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
+## LICENSE
+
+* All AVR source code files are licensed by the MIT License.
+* All schematics files are licensed by CC-BY-4.0.
+
 ## How it works on Version 2
 
 Two independent noise generator circuits, amplified to the CMOS digital level,
