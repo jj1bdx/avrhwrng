@@ -42,6 +42,21 @@ The code will run either on ATmega168 or ATmega328P.
 See `noiseshield-v2/` directory for the schematics (drawn by xcircuit). The
 entire circuits can be built on a standard Arduino prototype board.
 
+## On stream mixing strategy
+
+The current sampling strategy of only applying von Neumann algorithm
+independently for each bit stream and mixing the output into single byte stream
+is chosen for reducing statistical errors.
+
+Treating the two bit streams of PD7 and PD6 as two independent XORing byte
+streams caused the following TestU01 Rabbit test errors:
+
+```
+  1  MultinomialBitsOver              eps
+  2  ClosePairsBitMatch, t = 2      1.9e-68
+  3  ClosePairsBitMatch, t = 4     1.0e-146
+```
+
 ## Changes for Version 2
 
 * 25-SEP-2015: Add Timer 0 synchronization code
