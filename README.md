@@ -14,11 +14,12 @@ are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).
 The Timer 0 is set to CTC mode with the closest larger value to the theoretical
 limit, 46 machine cycles or 2.875 microseconds. The theoretical limit of the
 speed is 352000bps or 2.84 microseconds, which is equal to 11000 bytes * 8
-bits/byte * 2 (for von-Neumann test) * 2 (for XORing byte filter).
+bits/byte * 2 (for von-Neumann test) * 2 (for XORing byte filter). Sampling in
+an equal timing improves the quality of the obtained randomness.
 
 The MCU runs the following program without any hardware interrupt as an infinite loop:
 
-* Wait for the Timer 0 compare match happens (so that the sampling timing will not exceed the value given to Timer 0
+* Wait for the Timer 0 compare match happens, so that the sampling interval will not exceed the value given to Timer 0
 * Sample the pin inputs of PD6 and PD7
 * Treat the sampled two-bit pair into two independent bit streams
 * Apply the von Neumann algorithm for two consecutive sampled bits *independently* for each bit stream
@@ -28,7 +29,10 @@ The MCU runs the following program without any hardware interrupt as an infinite
 * Send each filtered byte to USART0 (non-blocking)
 * Go to the top and do it all over again
 
-The code will run either on ATmega168 or ATmega328P.
+Random number stream is obtained through the tty device of Arduino as a binary
+byte stream.
+
+The code will run either on ATmega168 or ATmega328P. 
 
 ## Changes for Version 2
 
@@ -36,6 +40,9 @@ The code will run either on ATmega168 or ATmega328P.
 * 24-SEP-2015: Initial revision, change PD7/PD6 to digital input, reduce LED blinking from each output bit to each output *byte*, remove interrupt-driven code
 
 ## How to compile
+
+* Install avr-gcc toolchain (see <https://gist.github.com/jj1bdx/f149305a57c4cb2cef7c>)
+* Compile
 
     # Use GNU Make (gmake on FreeBSD)
     make
@@ -46,16 +53,19 @@ The code will run either on ATmega168 or ATmega328P.
     avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
             -U flash:w:target-filename.hex
 
-## Actual output rate for Version 2
+## Test results on Version 2
 
+* FIPS 140-2 failure rate: ~0.0008 for ~138000 blocks
+* TestU01 Rabbit and Alphabit tests passed on 64Mbyte samples
 * Sampling rate: 2.875 us = ~347.8kHz 
 * Output rate for v2rev1: ~10800bytes/sec = ~86.4kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
 
-* This program can be written to Arduino with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
-* PySerial required. See <http://pythonhosted.org/pyserial/pyserial.html#installation>
+* The code is tested with avr-gcc 4.9.2 running on OS X 10.10.5.
+* This program is compatible with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
+* PySerial required for the sample Python code. See <http://pythonhosted.org/pyserial/pyserial.html#installation>
 
 ## FYI: changes for Version 1
 
