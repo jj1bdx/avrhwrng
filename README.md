@@ -52,11 +52,15 @@ entire circuits can be built on a standard Arduino prototype board.
 
 ## how to write the image
 
+* Compiled files are in `compiled-files` directory
+
     # for ATmega168 optiboot
     avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
             -U flash:w:target-filename.hex
 
 ## Test results on Version 2
+
+For the tagged binary `v2rev1-20150925`:
 
 * FIPS 140-2 failure rate: ~0.0008 for ~138000 blocks
 * TestU01 Rabbit and Alphabit tests passed on 64Mbyte samples
