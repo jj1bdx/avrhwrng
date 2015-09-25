@@ -52,16 +52,20 @@ entire circuits can be built on a standard Arduino prototype board.
 * Install avr-gcc toolchain (see <https://gist.github.com/jj1bdx/f149305a57c4cb2cef7c>)
 * Compile
 
-    # Use GNU Make (gmake on FreeBSD)
-    make
+```
+# Use GNU Make (gmake on FreeBSD)
+make
+```
 
 ## how to write the image
 
 * Compiled files are in `compiled-files` directory
 
-    # for ATmega168 optiboot
-    avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
-            -U flash:w:target-filename.hex
+```
+# for ATmega168 optiboot
+avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
+        -U flash:w:target-filename.hex
+```
 
 ## Test results on Version 2
 
