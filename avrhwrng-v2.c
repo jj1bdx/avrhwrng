@@ -174,27 +174,20 @@ int main() {
             oval0 = sval & 0x01;
             oval1 = sval & 0x02;
             /* set the 2nd bit state */
-        state = 1;
+            state = 1;
         } else {
-            /* obtain the 2nd bit pair */
-            /* do nothing if two bits are the same */
+            /* perform von Neumann test for each bit */
             if ((sval & 0x01) != oval0) {
                 if (oval0 == 0) {
-                    /* {1st, 2nd} = {0, 1} */
                     flagandbit0 = 1;
                 } else {
-                    /* {1st, 2nd} = {1, 0} */
                     flagandbit0 = 2;
                 }
             }
-            /* obtain the 2nd bit */
-            /* do nothing if two bits are the same */
             if ((sval & 0x02) != oval1) {
                 if (oval1 == 0) {
-                    /* {1st, 2nd} = {0, 1} */
                     flagandbit1 = 1;
                 } else {
-                    /* {1st, 2nd} = {1, 0} */
                     flagandbit1 = 2;
                 }
             }
