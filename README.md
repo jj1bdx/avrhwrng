@@ -13,7 +13,7 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 
 ## How it works on Version 2
 
-Two independent noise generator circuits, amplified to the CMOS digital level,
+Two independent noise generator circuits, amplified to the CMOS digital levels,
 are connected to ATmega168/328P's input pins (PD6/PD7, or Pin 6/7).
 
 The Timer 0 is set to CTC mode with the closest larger value to the theoretical
@@ -37,7 +37,8 @@ The MCU runs the following program without any hardware interrupt as an infinite
 Random number stream is obtained through the tty device of Arduino as a binary
 byte stream.
 
-The code will run either on ATmega168 or ATmega328P. 
+The code runs either on ATmega168 or ATmega328P (only a vector address
+difference).  Tested both on Arduino Duemilanove and Arduino UNO R3 boards.
 
 See `noiseshield-v2/` directory for the schematics (drawn by xcircuit). The
 entire circuits can be built on a standard Arduino prototype board.
@@ -47,6 +48,16 @@ entire circuits can be built on a standard Arduino prototype board.
 The current sampling strategy of only applying von Neumann algorithm
 independently for each bit stream and mixing the output into single byte stream
 is chosen for reducing statistical errors.
+
+The filtering scheme in a diagram:
+
+```
+Noise gen at PD7 --- von Neumann filter 1
+                             |
+             two bit streams mixed into one stream - two-byte XOR filter - output
+                             |
+Noise gen at PD6 --- von Neumann filter 2 
+```
 
 Treating the two bit streams of PD7 and PD6 as two independent XORing byte
 streams caused the following TestU01 Rabbit test errors:
@@ -78,6 +89,7 @@ make
 
 ```
 # for ATmega168 optiboot
+# (for ATmega328p, change m168 to m328p)
 avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
         -U flash:w:target-filename.hex
 ```
@@ -86,15 +98,17 @@ avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
 
 For the tagged binary `v2rev1-20150925`:
 
-* FIPS 140-2 failure rate: ~0.0008 for ~138000 blocks
-* TestU01 Rabbit and Alphabit tests passed on 64Mbyte samples
+* FIPS 140-2 failure rate: ~0.0008 (an example: 173 for 214992 blocks, tested by rngtest)
+* TestU01 Rabbit and Alphabit tests passed in most cases (~95%) on 1Mbit
+  samples; 1432 failures detected out of 28700 tests (1 Rabbit, 6
+  Alphabit tests for each sample) performed on 4100 samples
 * Sampling rate: 2.875 us = ~347.8kHz 
 * Output rate for v2rev1: ~10800bytes/sec = ~86.4kHz
 * Transfer rate from Arduino: 115200bps, 8-bit, no parity raw bytes
 
 ## Notes
 
-* The code is tested with avr-gcc 4.9.2 running on OS X 10.10.5.
+* The code is compiled with avr-gcc 4.9.2 running on OS X 10.10.5. Different compilers may generate different binaries.
 * This program is compatible with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
 * PySerial required for the sample Python code. See <http://pythonhosted.org/pyserial/pyserial.html#installation>
 
