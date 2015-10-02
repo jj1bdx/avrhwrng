@@ -85,13 +85,46 @@ make
 
 ## how to write the image
 
-* Compiled files are in `compiled-files` directory
+Compiled files are in `compiled-files` directory.
+
+For loading into an optiboot-ready device, use:
 
 ```
 # for ATmega168 optiboot
 # (for ATmega328p, change m168 to m328p)
 avrdude -D -c arduino -p m168 -b 115200 -P /dev/cuport-name \
         -U flash:w:target-filename.hex
+```
+
+You need to configure the following fuse bits for a production image:
+
+* Set BODLEVEL to 2.7V (only BODLEVEL1 is programmed to '0')
+* Disable SPIEN (to prevent external programming)
+* Disable BOOTRST (boot from $0000)
+* Set the lock bit
+
+Use the following command sequence for AVR Dragon with ATmega168:
+
+```
+# for ATmega168 AVR Dragon
+avrdude -D -v -p m168 -c dragon_pp -P usb \
+        -e -u -U lock:w:0xff:m \
+        -U efuse:w:0xff:m -U hfuse:w:0xfd:m -U lfuse:w:0xff:m \
+        -U flash:w:avrhwrng-v2rev1-ATmega168-20150925.hex \
+        -U lock:w:0xef:m
+```
+
+Use the following command sequence for AVR Dragon with ATmega328p (*the fuse
+bits are different from those of ATmega168)*:
+
+```
+# for ATmega328p AVR Dragon
+# NOTE WELL: the fuse bits are different from those of ATmega168!
+avrdude -D -v -p m328p -c dragon_pp -P usb \
+        -e -u -U lock:w:0xff:m \
+        -U efuse:w:0xfd:m -U hfuse:w:0xff:m -U lfuse:w:0xff:m \
+        -U flash:w:avrhwrng-v2rev1-ATmega328p-20150925.hex \
+        -U lock:w:0xef:m
 ```
 
 ## Test results on Version 2
