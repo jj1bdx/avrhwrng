@@ -87,10 +87,10 @@ static void ioinit(void) {
     UCSR0A = 0x02;
     /* async, no parity, 8bit */
     UCSR0C = 0x06;
-    /* baud rate (460800bps, 16MHz, U2Xn=1) */
-    /* real rate: 500000bps (2 microsecs/bit) */
+    /* baud rate (921600bps, 16MHz, U2Xn=1) */
+    /* real rate: 1000000bps (1 microsecs/bit) */
     UBRR0H = 0;
-    UBRR0L = 3;
+    UBRR0L = 1;
     /* no USART IRQ, enable TX (no RX) */
     UCSR0B = 0x08;
 
@@ -105,13 +105,13 @@ static void ioinit(void) {
      * This timer defines the sampling timing rate
      * from Port D (PD7 and PD6 together)
      * The timer period should not be smaller than
-     * 500000 / 10 * 8 = 400000Hz or 2.5 microseconds
+     * 1000000 / 10 * 8 / 2 = 400000Hz or 2.5 microseconds
      */
-    /* timer period: 5 machine cycles = 2.5 microseconds */
-    OCR0A = 5 - 1;
-    /* clk (16MHz/8 or 0.5 microsecond / count) */
+    /* timer period: 40 machine cycles = 2.5 microseconds */
+    OCR0A = 40 - 1;
+    /* clk (16MHz or 0.0625 microsecond / count) */
     /* start timer */
-    TCCR0B = 0x02;
+    TCCR0B = 0x01;
 
     /* Note: interrupts are NOT enabled at all */
 }
