@@ -73,9 +73,10 @@ static void ioinit(void) {
     DDRC = 0xff;
     PORTC = 0xff;
 
-    /* PB5 = LED on Arduino 2009 */
+    /* PB5 = LED on Arduino 2009/Uno */
+    /* Keep it turned on, no blink */
     DDRB = 0xff;
-    PORTB = 0x3f;
+    PORTB = 0xff;
 
     /* comparator disabled */
     ACSR = 0x80;
@@ -164,8 +165,6 @@ int main() {
         i++;
         /* print accumulated value */
         if (i > 3) {
-            /* show output bit to PORTB LED */
-            PORTB = p & 0x40;
             putchr(p);
             /* clear counter */
             i = 0;
