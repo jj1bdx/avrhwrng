@@ -31,10 +31,10 @@ bias.  Filtering this by SHA512 as a function defined as
 bytes of SHA512 output as a part of random number stream]
 ```
 
-made the output perfectly usable as a well-whitened random number sequence. The
-output passed the Rabbit and Alphabit tests of TestU01. The FIPS rngtest result
-for 1597357500 bytes of output resulted as follows (summary: test failure rate:
-0.079%):
+made the output perfectly usable as a well-whitened random number sequence.
+
+The FIPS 140-2 rngtest result for 1597357500 bytes of output resulted as
+follows (summary: test failure rate: 0.079%):
 
 ```
 ~/src/rngtest/rngtest -c 638943 < poi1filt.bin
@@ -54,6 +54,25 @@ rngtest: FIPS 140-2(2001-10-10) Continuous run: 0
 rngtest: input channel speed: (min=762.939; avg=12736.675; max=19073.486)Mibits/s
 rngtest: FIPS tests speed: (min=35.453; avg=126.549; max=129.752)Mibits/s
 rngtest: Program run time: 97340320 microseconds
+```
+
+TestU01 Rabbit and Alphabit tests passed in most cases (~94.8%) on 1Mbit
+samples; 1180 failures detected out of 22750 tests (1 Rabbit, 6 Alphabit tests
+for each sample) performed on 3250 samples.  The longer bit sample tests of
+TestU01 Rabbit and Alphabit tests for the 1992Mbit (249Mbyte) sample were all
+passed.
+
+The dieharder result of the 1597358592 byte output was very good, only the
+following six tests showed WEAK or FAILED (note that the input sequence was
+rewound as dieharder demanded):
+
+```
+ marsaglia_tsang_gcd|   0|  10000000|     100|0.00067376|   WEAK
+      rgb_lagged_sum|   5|   1000000|     100|0.99869903|   WEAK
+      rgb_lagged_sum|  15|   1000000|     100|0.00000602|   WEAK
+      rgb_lagged_sum|  29|   1000000|     100|0.99606274|   WEAK
+      rgb_lagged_sum|  31|   1000000|     100|0.00000000|  FAILED
+      rgb_lagged_sum|  32|   1000000|     100|0.99515256|   WEAK
 ```
 
 The result poses a fundamental question: *filtering on the hardware RNG board
