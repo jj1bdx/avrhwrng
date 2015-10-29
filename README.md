@@ -11,6 +11,56 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 * All AVR source code files are licensed by the MIT License.
 * All schematics files are licensed by CC-BY-4.0.
 
+## Preliminary test on the rawtest code
+
+26-OCT-2015: removal of filtering from the noise generation circuits conducted.
+
+By running `avrhwrng-rawtest.c`, all the mixing/filtering code have been
+*removed*, and the AVR outputs random number bytes are just filled in by the
+sampled raw two-bit sequence of PD7 and PD6. No other alteration. 
+
+The test was conducted on an Arduino Uno R3 with avrhwrng v2rev1 board. The
+sampling rate was 400kHz, and the output rate was 1Mbps. The actual output rate
+measured was ~76kbytes/sec.
+
+Obviously the output will not pass the statictic tests due to possible skew and
+bias.  Filtering this by SHA512 as a function defined as 
+
+```
+[512 bytes raw input] + [32 byte output from the previous SHA512 output] -> [64
+bytes of SHA512 output as a part of random number stream]
+```
+
+made the output perfectly usable as a well-whitened random number sequence. The
+output passed the Rabbit and Alphabit tests of TestU01. The FIPS rngtest result
+for 1597357500 bytes of output resulted as follows (summary: test failure rate:
+0.079%):
+
+```
+~/src/rngtest/rngtest -c 638943 < poi1filt.bin
+rngtest 2-unofficial-mt.14
+Copyright (c) 2004 by Henrique de Moraes Holschuh
+This is free software; see the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+rngtest: starting FIPS tests...
+rngtest: bits received from input: 12778860032
+rngtest: FIPS 140-2 successes: 638440
+rngtest: FIPS 140-2 failures: 503
+rngtest: FIPS 140-2(2001-10-10) Monobit: 62
+rngtest: FIPS 140-2(2001-10-10) Poker: 74
+rngtest: FIPS 140-2(2001-10-10) Runs: 188
+rngtest: FIPS 140-2(2001-10-10) Long run: 180
+rngtest: FIPS 140-2(2001-10-10) Continuous run: 0
+rngtest: input channel speed: (min=762.939; avg=12736.675; max=19073.486)Mibits/s
+rngtest: FIPS tests speed: (min=35.453; avg=126.549; max=129.752)Mibits/s
+rngtest: Program run time: 97340320 microseconds
+```
+
+The result poses a fundamental question: *filtering on the hardware RNG board
+is utterly meaningless if a sufficient whitening or
+statictically/cryptographically strong bit mixing is performed on the host
+side.*  Further investigation needed.
+
 ## How it works on Version 2
 
 Two independent noise generator circuits, amplified to the CMOS digital levels,
