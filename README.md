@@ -62,17 +62,14 @@ for each sample) performed on 3250 samples.  The longer bit sample tests of
 TestU01 Rabbit and Alphabit tests for the 1992Mbit (249Mbyte) sample were all
 passed.
 
-The dieharder result of the 1597358592 byte output was very good, only the
-following six tests showed WEAK or FAILED (note that the input sequence was
-rewound as dieharder demanded):
+Result updated 11-MOV-2015: a dieharder result of the 2179368064 byte output
+was very good, only the following three tests showed WEAK, no FAILED test (note
+that the input sequence was rewound as dieharder demanded):
 
 ```
- marsaglia_tsang_gcd|   0|  10000000|     100|0.00067376|   WEAK
-      rgb_lagged_sum|   5|   1000000|     100|0.99869903|   WEAK
-      rgb_lagged_sum|  15|   1000000|     100|0.00000602|   WEAK
-      rgb_lagged_sum|  29|   1000000|     100|0.99606274|   WEAK
-      rgb_lagged_sum|  31|   1000000|     100|0.00000000|  FAILED
-      rgb_lagged_sum|  32|   1000000|     100|0.99515256|   WEAK
+    diehard_rank_6x8|   0|    100000|     100|0.99942491|   WEAK
+        diehard_sums|   0|       100|     100|0.00071977|   WEAK
+      rgb_lagged_sum|  31|   1000000|     100|0.00057416|   WEAK
 ```
 
 The result poses a fundamental question: *filtering on the hardware RNG board
