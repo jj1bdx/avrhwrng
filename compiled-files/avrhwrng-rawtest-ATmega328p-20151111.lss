@@ -1,0 +1,252 @@
+
+avrhwrng-rawtest.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00000118  0000018c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         00000118  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .stab         00000720  00000000  00000000  0000018c  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  3 .stabstr      00000c5b  00000000  00000000  000008ac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .comment      00000011  00000000  00000000  00001507  2**0
+                  CONTENTS, READONLY
+  5 .debug_info   000005f4  00000000  00000000  00001518  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 000005a2  00000000  00000000  00001b0c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000001d  00000000  00000000  000020ae  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    00000208  00000000  00000000  000020cb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 40 00 	call	0x80	; 0x80 <main>
+  78:	0c 94 8a 00 	jmp	0x114	; 0x114 <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <main>:
+
+/* initialize IO ports */
+static void ioinit(void) {
+
+    /* disable interrupt before initialization*/
+    cli();
+  80:	f8 94       	cli
+    /*
+     * forced initialization
+     * of unnecessary interrupts
+     */
+
+    MCUCR = 0x00;
+  82:	15 be       	out	0x35, r1	; 53
+    EICRA = 0x00;
+  84:	10 92 69 00 	sts	0x0069, r1
+    EIMSK = 0x00;
+  88:	1d ba       	out	0x1d, r1	; 29
+    TIMSK0 = 0x00;
+  8a:	10 92 6e 00 	sts	0x006E, r1
+    TIMSK1 = 0x00;
+  8e:	10 92 6f 00 	sts	0x006F, r1
+    TIMSK2 = 0x00;
+  92:	10 92 70 00 	sts	0x0070, r1
+    PCMSK0 = 0x00;
+  96:	10 92 6b 00 	sts	0x006B, r1
+    PCMSK1 = 0x00;
+  9a:	10 92 6c 00 	sts	0x006C, r1
+    PCMSK2 = 0x00;
+  9e:	10 92 6d 00 	sts	0x006D, r1
+    PCICR = 0x00;
+  a2:	10 92 68 00 	sts	0x0068, r1
+    PRR = 0x00;
+  a6:	10 92 64 00 	sts	0x0064, r1
+     * PD6/Pin 6 to input
+     * TXD/PD1/Pin 1 to output
+     * RXD/PD0/Pin 0 to input
+     * pullup enabled
+     */
+    DDRD = 0x3e;
+  aa:	8e e3       	ldi	r24, 0x3E	; 62
+  ac:	8a b9       	out	0x0a, r24	; 10
+    PORTD = 0xff;
+  ae:	8f ef       	ldi	r24, 0xFF	; 255
+  b0:	8b b9       	out	0x0b, r24	; 11
+
+    /* PCx all output, pulled up */
+    DDRC = 0xff;
+  b2:	87 b9       	out	0x07, r24	; 7
+    PORTC = 0xff;
+  b4:	88 b9       	out	0x08, r24	; 8
+
+    /* PB5 = LED on Arduino 2009/Uno */
+    /* Keep it turned on, no blink */
+    DDRB = 0xff;
+  b6:	84 b9       	out	0x04, r24	; 4
+    PORTB = 0xff;
+  b8:	85 b9       	out	0x05, r24	; 5
+
+    /* comparator disabled */
+    ACSR = 0x80;
+  ba:	80 e8       	ldi	r24, 0x80	; 128
+  bc:	80 bf       	out	0x30, r24	; 48
+
+    /* USART 0 */
+    /* no USART IRQ, disable TX/RX */
+    UCSR0B = 0x00;
+  be:	10 92 c1 00 	sts	0x00C1, r1
+    /* clk 2x */
+    UCSR0A = 0x02;
+  c2:	92 e0       	ldi	r25, 0x02	; 2
+  c4:	90 93 c0 00 	sts	0x00C0, r25
+    /* async, no parity, 8bit */
+    UCSR0C = 0x06;
+  c8:	86 e0       	ldi	r24, 0x06	; 6
+  ca:	80 93 c2 00 	sts	0x00C2, r24
+    /* baud rate (921600bps, 16MHz, U2Xn=1) */
+    /* real rate: 1000000bps (1 microsecs/bit) */
+    UBRR0H = 0;
+  ce:	10 92 c5 00 	sts	0x00C5, r1
+    UBRR0L = 1;
+  d2:	81 e0       	ldi	r24, 0x01	; 1
+  d4:	80 93 c4 00 	sts	0x00C4, r24
+    /* no USART IRQ, enable TX (no RX) */
+    UCSR0B = 0x08;
+  d8:	28 e0       	ldi	r18, 0x08	; 8
+  da:	20 93 c1 00 	sts	0x00C1, r18
+
+    /* Timer 0 */
+    /* timer stop */
+    TCCR0B = 0x00;
+  de:	15 bc       	out	0x25, r1	; 37
+    /* reset counter */
+    TCNT0 = 0;
+  e0:	16 bc       	out	0x26, r1	; 38
+    /* no external output, CTC */
+    TCCR0A = 0x02;
+  e2:	94 bd       	out	0x24, r25	; 36
+     * from Port D (PD7 and PD6 together)
+     * The timer period should not be smaller than
+     * 1000000 / 10 * 8 / 2 = 400000Hz or 2.5 microseconds
+     */
+    /* timer period: 40 machine cycles = 2.5 microseconds */
+    OCR0A = 40 - 1;
+  e4:	97 e2       	ldi	r25, 0x27	; 39
+  e6:	97 bd       	out	0x27, r25	; 39
+    /* clk (16MHz or 0.0625 microsecond / count) */
+    /* start timer */
+    TCCR0B = 0x01;
+  e8:	85 bd       	out	0x25, r24	; 37
+
+/* raw bit test - no filtering */
+
+int main() {
+    uint8_t i = 0;
+    uint8_t p = 0;
+  ea:	90 e0       	ldi	r25, 0x00	; 0
+/* main function */
+
+/* raw bit test - no filtering */
+
+int main() {
+    uint8_t i = 0;
+  ec:	20 e0       	ldi	r18, 0x00	; 0
+    /* initialize ports, timers, serial, and IRQ */
+    ioinit();
+
+    for (;;) {
+        /* wait until OCF0A in TIFR0 enabled */
+        if ((TIFR0 & 0x02) == 0) {
+  ee:	a9 9b       	sbis	0x15, 1	; 21
+  f0:	fe cf       	rjmp	.-4      	; 0xee <main+0x6e>
+            continue;
+        }
+        /* Clear the OCF0A flag in TIFR0 */
+        TIFR0 |= 0x02;
+  f2:	a9 9a       	sbi	0x15, 1	; 21
+        /* put 2 bits from the top */
+        p = p >> 2;
+        p |= (PIND & 0xc0);
+  f4:	89 b1       	in	r24, 0x09	; 9
+            continue;
+        }
+        /* Clear the OCF0A flag in TIFR0 */
+        TIFR0 |= 0x02;
+        /* put 2 bits from the top */
+        p = p >> 2;
+  f6:	96 95       	lsr	r25
+  f8:	96 95       	lsr	r25
+        p |= (PIND & 0xc0);
+  fa:	80 7c       	andi	r24, 0xC0	; 192
+  fc:	98 2b       	or	r25, r24
+        i++;
+  fe:	2f 5f       	subi	r18, 0xFF	; 255
+        /* print accumulated value */
+        if (i > 3) {
+ 100:	24 30       	cpi	r18, 0x04	; 4
+ 102:	a8 f3       	brcs	.-22     	; 0xee <main+0x6e>
+     * than the byte sending rate to serial,
+     * busy-waiting period will not happen
+     * many times, so this doesn't have to be
+     * interrupt-driven
+     */
+    loop_until_bit_is_set(UCSR0A, UDRE0);
+ 104:	80 91 c0 00 	lds	r24, 0x00C0
+ 108:	85 ff       	sbrs	r24, 5
+ 10a:	fc cf       	rjmp	.-8      	; 0x104 <main+0x84>
+    /* Output the given char to USART0 */
+    UDR0 = c;
+ 10c:	90 93 c6 00 	sts	0x00C6, r25
+        i++;
+        /* print accumulated value */
+        if (i > 3) {
+            putchr(p);
+            /* clear counter */
+            i = 0;
+ 110:	20 e0       	ldi	r18, 0x00	; 0
+ 112:	ed cf       	rjmp	.-38     	; 0xee <main+0x6e>
+
+00000114 <_exit>:
+ 114:	f8 94       	cli
+
+00000116 <__stop_program>:
+ 116:	ff cf       	rjmp	.-2      	; 0x116 <__stop_program>
