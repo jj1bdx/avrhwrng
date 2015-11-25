@@ -1,7 +1,7 @@
 footer: Kenji Rikitake / IPSJ IOTS2015
 slidenumbers: true
 
-# Affordable hardware random number generator (HRNG)
+# Affordable hardware random number generators (HRNGs)
 
 <!-- Use Deckset 1.4, Zurich theme, 16:9 aspect ratio -->
 
@@ -71,8 +71,8 @@ A JPY1500 board will make a host computer secure enough
 # Why /dev/urandom is not enough?
 
 * Insufficient seeding
-* Too small entropy harvestable
-* Being spent by too many applications
+* Harvestable entropy too small
+* Harvested entropy is spent by too many applications simultaneously
 
 ---
 
@@ -80,15 +80,23 @@ A JPY1500 board will make a host computer secure enough
 
 * *PROPRIETARY* hardware
 * Possible *BACKDOORS*
-* Might be too *SLOW*
+* Might be too *SLOW* (taking hundreds of system clocks for each call)
 
 ---
 
 # Why *original* HRNG?
 
 * Required for *sufficient strength* of seeding /dev/[u]random
-* Fast and sufficient seeding
-* Fast enough to feed all applications
+* Fast and more unpredictable seeding
+* Fast enough to feed all applications through making /dev/[u]random sufficiently random
+
+---
+
+# Obtaining statistically sound result
+
+* Periodic measurement of output statistical characteristics is required
+* The same measurement for *raw* output is recommended for early failure detection
+* Whitening by cryptographic hash functions (SHA256, SHA512, etc) is necessary to obrain statistically good and sound result 
 
 ---
 
@@ -97,13 +105,17 @@ A JPY1500 board will make a host computer secure enough
 * avrhwrng
 * ST Dongle for NeuG
 
+## Both are USB CDC-ACM devices
+
+* Accessible as modem/tty devices
+
 ---
 
 # avrhwrng
 
 * With 8bit AVR Arduino
 * Reverse biased diodes
-* ~10kbytes/sec
+* ~10kbytes/sec (raw output: ~80kbytes/sec)
 * DC 12V required
 * Arduino shield
 
@@ -143,7 +155,8 @@ A JPY1500 board will make a host computer secure enough
 * Yutaka Niibe's GPLv3 HRNG software for ARM Cortex-M3 including Flying Stone's FST-01
 * RNG for GnuK, a secure cryptographic token hardware usable on GnuPG and OpenSSH
 * No external power required
-* ~80kbytes/sec
+* Using internal A/D converter noise as the randomness source
+* ~80kbytes/sec (after CRC32 and SHA256 whitening)
 
 ---
 
@@ -188,7 +201,7 @@ A JPY1500 board will make a host computer secure enough
 
 * Stable operation infrastructure needed for fault tolerance
 * Expertise on production-level cases (e.g., DNSSEC, PKI key generation)
-* Windows? OS X? Android? iOS? Other proprietary platforms?
+* We need more internal information for seeding the system PRNG by the external devices: Windows? OS X? Android? iOS? Other proprietary platforms?
 
 ---
 
