@@ -156,7 +156,7 @@ A JPY1500 board will make a host computer secure enough
 * RNG for GnuK, a secure cryptographic token hardware usable on GnuPG and OpenSSH
 * No external power required
 * Using internal A/D converter noise as the randomness source
-* ~80kbytes/sec (after CRC32 and SHA256 whitening)
+* ~80kbytes/sec (with internal whitening)
 
 ---
 
