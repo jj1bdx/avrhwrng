@@ -16,7 +16,7 @@ COMMON = -mmcu=$(MCU)
 # For OS X HomeBrew avr-gcc
 COMMON += -I/usr/local/Cellar/avr-libc/1.8.1/avr/include
 COMMON += -L/usr/local/Cellar/avr-libc/1.8.1/avr/lib
-COMMON += -L/usr/local/Cellar/avr-binutils/2.25/avr/lib
+#COMMON += -L/usr/local/Cellar/avr-binutils/2.25/avr/lib
 COMMON += -B/usr/local/Cellar/avr-libc/1.8.1/avr/lib/avr5
 
 ## Compile options common for all C compilation units.
