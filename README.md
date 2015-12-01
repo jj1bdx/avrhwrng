@@ -16,6 +16,14 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 * See `ipsj-iots2015/` for the set of the documentation (PDF paper in Japanese,
   slides in English) of my presentation at IPSJ IOTS2015 Symposium on 27-NOV-2015.
 
+## Makefiles
+
+The default `Makefile` is a copy of `Makefile.v2`.
+
+* `Makefile.v1`: for the v1 code
+* `Makefile.v2`: for the v2 code
+* `Makefile.rawtest`: for the rawtest code
+
 ## Preliminary test on the rawtest code
 
 26-OCT-2015: removal of filtering from the noise generation circuits conducted.
