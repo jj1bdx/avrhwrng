@@ -11,6 +11,11 @@ is written in C and avr-libc at <http://www.nongnu.org/avr-libc/>.
 * All AVR source code files are licensed by the MIT License.
 * All schematics files are licensed by CC-BY-4.0.
 
+## Documentation
+
+* See `ipsj-iots2015/` for the set of the documentation (PDF paper in Japanese,
+  slides in English) of my presentation at IPSJ IOTS2015 Symposium on 27-NOV-2015.
+
 ## Preliminary test on the rawtest code
 
 26-OCT-2015: removal of filtering from the noise generation circuits conducted.
