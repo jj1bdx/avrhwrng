@@ -12,6 +12,8 @@ independent noise generator circuits, and the outputs are amplified to the CMOS
 digital levels, which are connected to ATmega168/328P's input pins (PD6/PD7, or
 Pin 6/7).
 
+The latest fix of `v2rev1fix1` adds a 10uF capacitor to the power supply of the noise diode circuit as a part of the voltage ripple filter, so that the noise diode circuit can accept the output of a DC-DC converter such as Maxim MAX662A.
+
 Schematics and photos are available in `schematics/` and `photos/` directories, respectively.
 
 ## Firmware
