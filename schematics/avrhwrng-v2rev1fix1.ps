@@ -1,9 +1,9 @@
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: avrhwrng-v2rev1.ps
+%%Title: avrhwrng-v2rev1fix1.ps
 %%Creator: XCircuit v3.8 rev78
-%%CreationDate: Fri Sep 25 10:06:53 2015
+%%CreationDate: Thu Jun  2 12:16:49 2016
 %%Pages: 1
-%%BoundingBox: 68 68 586 400
+%%BoundingBox: 68 68 598 418
 %%DocumentNeededResources: font Helvetica Times-Roman Symbol 
 %%EndComments
 %%BeginProlog
@@ -284,12 +284,12 @@ endgate
 
 %%EndSetup
 
-%%Page: avrhwrng-c2rev1 1
+%%Page: avrhwrng-v2rev1fix1 1
 %%PageOrientation: Portrait
 /pgsave save def bop
 % 16.00 16.00 gridspace
 1.0000 inchscale
-2.6000 setlinewidth 1280 134 translate
+2.6000 setlinewidth 1280 182 translate
 
 1.000 0 -752 224 analog::npn
 1.000 180 -992 224 analog::npn
@@ -299,20 +299,21 @@ endgate
 -1088 896 label
 (for a hardware random number generator) {/Helvetica cf} 2 16 0 1.000 -1088 848 
 label
-(by Kenji Rikitake / v2rev1 / 25-SEP-2015) {/Helvetica cf} 2 16 0 1.000 -1088 
-800 label
-(Vin = +12V or +13.8V \(+9V didn't work\)) {/Helvetica cf} 2 16 0 1.000 -1088 
-688 label
+(by Kenji Rikitake / v2rev1fix1 / 2-JUN-2016) {/Helvetica cf} 2 16 0 1.000 
+-1088 800 label
+
+(Vin = +12V or +13.8V \(+9V didn't work\) \(DC-DC converter output acceptable\)) 
+{/Helvetica cf} 2 16 0 1.000 -1088 688 label
 1.000 0.000 0.000 scb
 {/Helvetica cf} 1 16 0 1.000 214 343 pinlabel
 sce
 -1.000 270 -928 320 analog::resistor
-1.000 /sv 270 -800 449 analog::capacitor
+1.000 /sv 270 -752 529 analog::capacitor
 1.000 /sv 360 -1056 257 analog::capacitor
 1.000 0 -752 160 analog::gnd
 1.000 0 -736 448 analog::gnd
 1.000 0 -864 512 analog::resistor
-(Vin) {/Helvetica cf} 2 16 0 1.000 -896 592 label
+(Vin) {/Helvetica cf} 2 16 0 1.000 -896 640 label
 1.000 /sv 270 -688 320 analog::capacitor
 1 1.000 -864 320 -752 320 2 polygon
 1 1.000 -992 320 -1056 320 2 polygon
@@ -321,7 +322,6 @@ sce
 1 1.000 -752 288 -752 320 2 polygon
 1.000 0 -863 449 generic::dot
 1.000 0 -991 318 generic::dot
-1.000 0 -753 319 generic::dot
 1.000 0 -863 319 generic::dot
 1.000 0 -576 320 digital::invert
 1.000 /sv 270 -452 320 analog::capacitor
@@ -361,11 +361,26 @@ sce
 0 1.000 -544 640 -544 512 -352 512 -352 640 4 polygon
 (Pins: {1, 2}, {3, 4}, {5, 6}) {/Helvetica cf} 2 16 0 1.000 -640 176 label
 (Pins: {13, 12}, {11, 10}, {9, 8}) {/Helvetica cf} 2 16 0 1.000 -640 128 label
-(Caps: 100nF 50V layered ceramic) {/Helvetica cf} 2 16 0 1.000 -336 592 label
-(Resistors: 1/4W carbon) {/Helvetica cf} 2 16 0 1.000 -336 544 label
+(Caps: 100nF 50V layered ceramic) {/Helvetica cf} 2 16 0 1.000 -336 608 label
+(Resistors: 1/4W carbon) {/Helvetica cf} 2 16 0 1.000 -336 512 label
 (Licensed CC-BY-4.0) {/Helvetica cf} 2 16 0 1.000 -1088 752 label
 (\(The above circuit only shows one of the two same necessary circuits\)) 
 {/Helvetica cf} 2 16 0 1.000 -1088 64 label
+(\(unless otherwise noticed\)) {/Helvetica cf} 2 16 0 1.000 -336 560 label
+1.000 /sv 270 -800 449 analog::capacitor
+1.000 0 -753 319 generic::dot
+1.000 0 -817 527 generic::dot
+1.000 0 -689 527 generic::dot
+1.000 0 -737 447 generic::dot
+1 1.000 -864 448 -816 528 2 polygon
+1 1.000 -736 448 -688 528 2 polygon
+(10uF 25V) {/Helvetica cf} 2 16 0 1.000 -832 560 label
+(ceramic) {/Helvetica cf} 2 16 0 1.000 -816 592 label
+{/Helvetica cf} 1 16 0 1.000 -720 624 label
+1 1.000 -864 576 -864 640 2 polygon
+
+(Change from v2rev1: add a 10uF cap \(parallel to 100nF\) for Vin ripple filter) 
+{/Helvetica cf} 2 16 0 1.000 -1088 16 label
 pgsave restore showpage
 
 %%Trailer
