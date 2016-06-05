@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2009-2015 Kenji Rikitake
+ * Copyright (c) 2009-2016 Kenji Rikitake
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,9 +22,11 @@
  * THE SOFTWARE.
  */
 /*
+ * avrhwrng v2rev1 firmware code
  * for hardware randomizer connected to
  * PD7 (digital pin 7) and PD6 (digital pin 6)
- * of Arduino Duemilanove hardware (ATmega168)
+ * of Arduino Duemilanove/UNO hardware
+ * (ATmega168/ATmega328P)
  * by Kenji Rikitake
  */
 
@@ -45,7 +47,6 @@ static void ioinit(void) {
      * forced initialization
      * of unnecessary interrupts
      */
-
     MCUCR = 0x00;
     EICRA = 0x00;
     EIMSK = 0x00;
@@ -117,7 +118,6 @@ static void ioinit(void) {
 }
 
 /* output to USART0 */
-
 static void putchr(uint8_t c) {
     /*
      * busy-waiting UDRE0
@@ -141,7 +141,6 @@ static void putchr(uint8_t c) {
  */
 
 /* main function */
-
 int main() {
     uint8_t i = 0;
     uint8_t p = 0;
@@ -158,6 +157,7 @@ int main() {
     /* initialize ports, timers, serial, and IRQ */
     ioinit();
 
+    /* main loop */
     for (;;) {
         /* wait until OCF0A in TIFR0 enabled */
         if ((TIFR0 & 0x02) == 0) {
