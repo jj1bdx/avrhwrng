@@ -2,6 +2,7 @@
 
 * src/: old source files
 * doc/: old documents and testing results
+* old-compiled-files/: old binary files and compiled results (for rawtest)
 
 ## Makefiles
 
