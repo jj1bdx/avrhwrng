@@ -1,10 +1,10 @@
 %!PS-Adobe-3.0 EPSF-3.0
 %%Title: avrhwrng-v2rev1fix1.ps
 %%Creator: XCircuit v3.8 rev78
-%%CreationDate: Thu Jun  2 12:16:49 2016
+%%CreationDate: Sun Jun  5 19:59:35 2016
 %%Pages: 1
-%%BoundingBox: 68 68 598 418
-%%DocumentNeededResources: font Helvetica Times-Roman Symbol 
+%%BoundingBox: 68 68 586 454
+%%DocumentNeededResources: font Helvetica Times-Roman 
 %%EndComments
 %%BeginProlog
 %
@@ -270,117 +270,111 @@ begingate
 endgate
 } def
 
-/digital::5V {
-% trivial
-begingate
-1 1.000 -32 0 32 0 2 polygon
-1 1.000 0 0 0 -32 2 polygon
-(V) {/Times-Roman cf} (+5) {/Symbol cf} 4 17 0 0.900 0 8 label
-0.933 0.604 0.000 scb
-(dVdd) {/Times-Roman cf} 2 13 0 1.000 0 -32 pinglobal
-endgate
-} def
-
 
 %%EndSetup
 
-%%Page: avrhwrng-v2rev1fix1 1
+%%Page: avrhwrng-v2rev1fix1-main-circuit 1
 %%PageOrientation: Portrait
 /pgsave save def bop
 % 16.00 16.00 gridspace
 1.0000 inchscale
-2.6000 setlinewidth 1280 182 translate
+2.6000 setlinewidth 1280 278 translate
 
-1.000 0 -752 224 analog::npn
-1.000 180 -992 224 analog::npn
-1.000 0 -1056 223 analog::gnd
-1.000 0 -864 384 analog::resistor
+1.000 0 -752 256 analog::npn
+1.000 180 -992 256 analog::npn
+1.000 0 -1056 255 analog::gnd
+1.000 0 -864 416 analog::resistor
 (avrhwrng: Arduino 2009/UNO shield schematics) {/Helvetica cf} 2 16 0 1.000 
 -1088 896 label
 (for a hardware random number generator) {/Helvetica cf} 2 16 0 1.000 -1088 848 
 label
-(by Kenji Rikitake / v2rev1fix1 / 2-JUN-2016) {/Helvetica cf} 2 16 0 1.000 
+(by Kenji Rikitake / v2rev1fix1 / 5-JUN-2016) {/Helvetica cf} 2 16 0 1.000 
 -1088 800 label
-
-(Vin = +12V or +13.8V \(+9V didn't work\) \(DC-DC converter output acceptable\)) 
-{/Helvetica cf} 2 16 0 1.000 -1088 688 label
+(Vnoise must be >= +12V \(+9V didn't work\) ) {/Helvetica cf} 2 16 0 1.000 
+-1088 -32 label
 1.000 0.000 0.000 scb
-{/Helvetica cf} 1 16 0 1.000 214 343 pinlabel
+{/Helvetica cf} 1 16 0 1.000 214 375 pinlabel
 sce
--1.000 270 -928 320 analog::resistor
-1.000 /sv 270 -752 529 analog::capacitor
-1.000 /sv 360 -1056 257 analog::capacitor
-1.000 0 -752 160 analog::gnd
-1.000 0 -736 448 analog::gnd
-1.000 0 -864 512 analog::resistor
-(Vin) {/Helvetica cf} 2 16 0 1.000 -896 640 label
-1.000 /sv 270 -688 320 analog::capacitor
-1 1.000 -864 320 -752 320 2 polygon
-1 1.000 -992 320 -1056 320 2 polygon
-1 1.000 -992 320 -992 288 2 polygon
-1 1.000 -928 224 -816 224 2 polygon
-1 1.000 -752 288 -752 320 2 polygon
-1.000 0 -863 449 generic::dot
-1.000 0 -991 318 generic::dot
-1.000 0 -863 319 generic::dot
-1.000 0 -576 320 digital::invert
-1.000 /sv 270 -452 320 analog::capacitor
-1.000 0 -352 320 digital::invert
-1.000 0 -190 320 digital::invert
-1 1.000 -288 320 -234 320 2 polygon
-1.000 0 -640 320 generic::dot
-1.000 0 -510 320 generic::dot
-1.000 0 -416 320 generic::dot
-1.000 0 -286 320 generic::dot
--1.000 270 -575 384 analog::resistor
--1.000 270 -351 384 analog::resistor
-1 1.000 -640 320 -640 384 2 polygon
-1 1.000 -512 320 -512 384 2 polygon
-1 1.000 -416 320 -416 384 2 polygon
-1 1.000 -288 320 -288 384 2 polygon
-1 1.000 -128 320 -96 320 2 polygon
-(100k) {/Helvetica cf} 2 16 0 1.000 -608 416 label
-(100k) {/Helvetica cf} 2 16 0 1.000 -384 416 label
-(100) {/Helvetica cf} 2 16 0 1.000 -944 496 label
-(4k7) {/Helvetica cf} 2 16 0 1.000 -848 368 label
-(47k) {/Helvetica cf} 2 16 0 1.000 -960 352 label
-(2N3904 x 2) {/Helvetica cf} 2 16 0 1.000 -1008 112 label
-(74HCU04 3/6) {/Helvetica cf} 2 16 0 1.000 -528 240 label
-(to digital input) {/Helvetica cf} 2 16 0 1.000 -80 320 label
-(\(PD6 / PD7\)) {/Helvetica cf} 2 16 0 1.000 -80 272 label
-1.000 0 -608 640 digital::5V
-1.000 /sv 360 -608 577 analog::capacitor
-1.000 0 -608 543 analog::gnd
-1.000 0 -608 608 generic::dot
-1.000 0 -608 544 generic::dot
-1 1.000 -608 608 -544 608 2 polygon
-1 1.000 -608 544 -544 544 2 polygon
-(Pin 14) {/Helvetica cf} 2 16 0 1.000 -538 599 label
-(Pin 7) {/Helvetica cf} 2 16 0 1.000 -539 524 label
-(74HCU04 ) {/Helvetica cf} 2 16 0 1.000 -544 560 label
-0 1.000 -544 640 -544 512 -352 512 -352 640 4 polygon
-(Pins: {1, 2}, {3, 4}, {5, 6}) {/Helvetica cf} 2 16 0 1.000 -640 176 label
-(Pins: {13, 12}, {11, 10}, {9, 8}) {/Helvetica cf} 2 16 0 1.000 -640 128 label
-(Caps: 100nF 50V layered ceramic) {/Helvetica cf} 2 16 0 1.000 -336 608 label
-(Resistors: 1/4W carbon) {/Helvetica cf} 2 16 0 1.000 -336 512 label
+-1.000 270 -928 352 analog::resistor
+1.000 /sv 270 -752 561 analog::capacitor
+1.000 /sv 360 -1056 289 analog::capacitor
+1.000 0 -752 192 analog::gnd
+1.000 0 -736 480 analog::gnd
+1.000 0 -864 544 analog::resistor
+(Vnoise) {/Helvetica cf} 2 16 0 1.000 -928 688 label
+1.000 /sv 270 -688 352 analog::capacitor
+1 1.000 -864 352 -752 352 2 polygon
+1 1.000 -992 352 -1056 352 2 polygon
+1 1.000 -992 352 -992 320 2 polygon
+1 1.000 -928 256 -816 256 2 polygon
+1 1.000 -752 320 -752 352 2 polygon
+1.000 0 -863 481 generic::dot
+1.000 0 -991 350 generic::dot
+1.000 0 -863 351 generic::dot
+1.000 0 -576 352 digital::invert
+1.000 /sv 270 -452 352 analog::capacitor
+1.000 0 -352 352 digital::invert
+1.000 0 -190 352 digital::invert
+1 1.000 -288 352 -234 352 2 polygon
+1.000 0 -640 352 generic::dot
+1.000 0 -510 352 generic::dot
+1.000 0 -416 352 generic::dot
+1.000 0 -286 352 generic::dot
+-1.000 270 -575 416 analog::resistor
+-1.000 270 -351 416 analog::resistor
+1 1.000 -640 352 -640 416 2 polygon
+1 1.000 -512 352 -512 416 2 polygon
+1 1.000 -416 352 -416 416 2 polygon
+1 1.000 -288 352 -288 416 2 polygon
+1 1.000 -128 352 -96 352 2 polygon
+(100k) {/Helvetica cf} 2 16 0 1.000 -608 448 label
+(100k) {/Helvetica cf} 2 16 0 1.000 -384 448 label
+(100) {/Helvetica cf} 2 16 0 1.000 -944 528 label
+(4k7) {/Helvetica cf} 2 16 0 1.000 -848 400 label
+(47k) {/Helvetica cf} 2 16 0 1.000 -960 384 label
+(2N3904 x 2) {/Helvetica cf} 2 16 0 1.000 -1008 144 label
+(74HCU04 3/6) {/Helvetica cf} 2 16 0 1.000 -528 272 label
+(to digital input) {/Helvetica cf} 2 16 0 1.000 -80 352 label
+(\(PD6 / PD7\)) {/Helvetica cf} 2 16 0 1.000 -80 304 label
+1.000 /sv 360 -608 609 analog::capacitor
+1.000 0 -608 575 analog::gnd
+1.000 0 -608 640 generic::dot
+1.000 0 -608 576 generic::dot
+1 1.000 -608 640 -544 640 2 polygon
+1 1.000 -608 576 -544 576 2 polygon
+(Pin 14) {/Helvetica cf} 2 16 0 1.000 -538 631 label
+(Pin 7) {/Helvetica cf} 2 16 0 1.000 -539 556 label
+(74HCU04 ) {/Helvetica cf} 2 16 0 1.000 -544 592 label
+0 1.000 -544 672 -544 544 -352 544 -352 672 4 polygon
+(Pins: {1, 2}, {3, 4}, {5, 6}) {/Helvetica cf} 2 16 0 1.000 -640 208 label
+(Pins: {13, 12}, {11, 10}, {9, 8}) {/Helvetica cf} 2 16 0 1.000 -640 160 label
+(Caps: 100nF 50V layered ceramic) {/Helvetica cf} 2 16 0 1.000 -336 640 label
+(Resistors: 1/4W carbon) {/Helvetica cf} 2 16 0 1.000 -336 544 label
 (Licensed CC-BY-4.0) {/Helvetica cf} 2 16 0 1.000 -1088 752 label
 (\(The above circuit only shows one of the two same necessary circuits\)) 
 {/Helvetica cf} 2 16 0 1.000 -1088 64 label
-(\(unless otherwise noticed\)) {/Helvetica cf} 2 16 0 1.000 -336 560 label
-1.000 /sv 270 -800 449 analog::capacitor
-1.000 0 -753 319 generic::dot
-1.000 0 -817 527 generic::dot
-1.000 0 -689 527 generic::dot
-1.000 0 -737 447 generic::dot
-1 1.000 -864 448 -816 528 2 polygon
-1 1.000 -736 448 -688 528 2 polygon
-(10uF 25V) {/Helvetica cf} 2 16 0 1.000 -832 560 label
-(ceramic) {/Helvetica cf} 2 16 0 1.000 -816 592 label
-{/Helvetica cf} 1 16 0 1.000 -720 624 label
-1 1.000 -864 576 -864 640 2 polygon
+(\(unless otherwise noticed\)) {/Helvetica cf} 2 16 0 1.000 -336 592 label
+1.000 /sv 270 -800 481 analog::capacitor
+1.000 0 -753 351 generic::dot
+1.000 0 -817 559 generic::dot
+1.000 0 -689 559 generic::dot
+1.000 0 -737 479 generic::dot
+1 1.000 -864 480 -816 560 2 polygon
+1 1.000 -736 480 -688 560 2 polygon
+(10uF 25V) {/Helvetica cf} 2 16 0 1.000 -832 592 label
+(ceramic) {/Helvetica cf} 2 16 0 1.000 -816 624 label
+{/Helvetica cf} 1 16 0 1.000 -720 656 label
+1 1.000 -864 608 -864 672 2 polygon
 
 (Change from v2rev1: add a 10uF cap \(parallel to 100nF\) for Vin ripple filter) 
 {/Helvetica cf} 2 16 0 1.000 -1088 16 label
+1 1.000 -640 672 -576 672 2 polygon
+1.000 0 -609 671 generic::dot
+(+5V) {/Helvetica cf} 2 16 0 1.000 -640 688 label
+1 1.000 -896 672 -832 672 2 polygon
+1.000 0 -865 671 generic::dot
+(Vnoise can be supplied from Arduino Vin or a DC-DC converter) {/Helvetica cf} 
+2 16 0 1.000 -1088 -80 label
 pgsave restore showpage
 
 %%Trailer
