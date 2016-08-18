@@ -65,6 +65,7 @@ difference).  Tested both on Arduino Duemilanove and Arduino UNO R3 boards.
 ## Documentation
 
 * See `presentations/ipsj-iots2015/` for the set of the documentation (PDF paper in Japanese, slides in English) of my presentation at IPSJ IOTS2015 Symposium on 27-NOV-2015.
+* 日本語での解説は技術評論社Software Design誌2016年9月号pp. 96-101「乱数を使いこなす(2):物理乱数ハードウェアを作る」をご参照ください
 
 ## How to compile
 
@@ -136,6 +137,13 @@ For the tagged binary `v2rev1-20150925`:
 
 * The code is compiled with avr-gcc 4.9.2 running on OS X 10.10.5. Different compilers may generate different binaries.
 * This program is compatible with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
+
+## Related tools
+
+* FreeBSD driver for random(4) and the feeder: <https://github.com/jj1bdx/freebsd-dev-trng>
+* OS X feeder: <https://github.com/jj1bdx/osx-devrandom-feeder>
+* Arduino's ATmega16u2 USB firmware (for reassignment of USB VID/PID): <https://github.com/jj1bdx/arduino-atmega16u2>
+* FreeBSD RNG test tool: <https://github.com/jj1bdx/rngtest>
 
 ## LICENSE
 
