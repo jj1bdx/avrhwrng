@@ -135,7 +135,9 @@ For the tagged binary `v2rev1-20150925`:
 
 ## Notes
 
-* The code is compiled with avr-gcc 4.9.2 running on OS X 10.10.5. Different compilers may generate different binaries.
+* Compilation tested on: avr-gcc 4.9.2, OS X 10.10.5
+* Compilation tested on: avr-gcc 7.1.0, macOS 10.12.6
+* Different compilers may generate different binaries.
 * This program is compatible with [optiboot bootloader](https://github.com/Optiboot/optiboot/).
 
 ## Related tools
